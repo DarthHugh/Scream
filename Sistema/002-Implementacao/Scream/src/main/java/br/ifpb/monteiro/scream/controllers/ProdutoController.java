@@ -117,7 +117,7 @@ public class ProdutoController implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
 
             FacesContext.getCurrentInstance().getExternalContext()
-                    .redirect("/Scream/itensProduto/indexNovo.xhtml");
+                    .redirect("/Scream/itensProduto/index.xhtml");
         } catch (IOException ex) {
             JsfUtil.addErrorMessage(ex, "Pagina não encontrada");
             Logger.getLogger(ContaController.class.getName()).log(Level.SEVERE,

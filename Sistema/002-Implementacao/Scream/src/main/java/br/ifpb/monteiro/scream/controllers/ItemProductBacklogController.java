@@ -54,11 +54,11 @@ public class ItemProductBacklogController implements Serializable {
 	public void Init(){
 
 
-		setSelectItemProductBacklog(new ItemProductBacklog());
+		//setSelectItemProductBacklog();
 
 		produtoSelecionado = produtoService.find(buscaIdURL());
 		itemProductBacklog = new ItemProductBacklog();
-		//		selectItemProductBacklog = (ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item");
+		selectItemProductBacklog = (ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item");
 		listItensProduto= itemProductBacklogService.findItensProduto(buscaIdURL());
 		//setListProduto(produtoService.findAll());
 		//		setListItensProductBacklog(findAll());
@@ -87,10 +87,18 @@ public class ItemProductBacklogController implements Serializable {
 		redirect();
 	}
 
-	public void update(){
-		itemProductBacklogService.update(selectItemProductBacklog);
-		redirect();
-	}
+//	public void update(){
+//		System.out.println(selectItemProductBacklog.getId());
+//	}
+
+		public void update(){
+			if(selectItemProductBacklog.getId() == null){
+				System.out.println("Deu Merge");
+			}else{			
+				itemProductBacklogService.update(selectItemProductBacklog);			
+			}
+			redirect();
+		}
 
 	private void gerarData() {
 		Calendar calendar = GregorianCalendar.getInstance();
@@ -112,13 +120,13 @@ public class ItemProductBacklogController implements Serializable {
 	public void redirect(){
 		try {//Redirect para atualização das informações
 			FacesContext.getCurrentInstance().getExternalContext()
-			.redirect("/Scream/itensProduto/indexNovo.xhtml?id="+idProduto);
+			.redirect("/Scream/itensProduto/index.xhtml?id="+idProduto);
 		} catch (IOException e) {
 			JsfUtil.addErrorMessage("Aconteceu algo inesperado ao apagar este produto");
 		}
 	}
 
-	public void manterProduto() {
+	public void manterItem() {
 		contexto.getExternalContext().getSessionMap().put("item", selectItemProductBacklog);
 	}
 
@@ -183,6 +191,8 @@ public class ItemProductBacklogController implements Serializable {
 	}
 
 	public static Long idProduto;
+//	
+//	public static Long idItemPB;
 
 
 	public List<ItemProductBacklog> getListItensProduto() {
