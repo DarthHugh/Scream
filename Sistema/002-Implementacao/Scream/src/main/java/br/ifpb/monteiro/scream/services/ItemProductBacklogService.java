@@ -40,10 +40,11 @@ public class ItemProductBacklogService {
         this.itemProductBacklogDAO.update(entity);
     }
     
-    @Transactional
+//    @Transactional
     public void remove(ItemProductBacklog entity) {
         this.itemProductBacklogDAO.delete(entity);
     }
+    
     
     public int count() {
         return itemProductBacklogDAO.count();

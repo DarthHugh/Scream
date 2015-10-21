@@ -1,5 +1,6 @@
 package br.ifpb.monteiro.scream.controllers;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +17,7 @@ import br.ifpb.monteiro.scream.entities.ItemProductBacklog;
 import br.ifpb.monteiro.scream.entities.Produto;
 import br.ifpb.monteiro.scream.services.ItemProductBacklogService;
 import br.ifpb.monteiro.scream.services.ProdutoService;
+import br.ifpb.monteiro.scream.util.jsf.JsfUtil;
 
 /**
  *
@@ -43,35 +45,52 @@ public class ItemProductBacklogController implements Serializable {
 	private ItemProductBacklog selectItemProductBacklog;
 
 	private List<ItemProductBacklog> listItensProductBacklog;
-	
+
 	private List<ItemProductBacklog> listItensProduto;
+
+	FacesContext contexto = FacesContext.getCurrentInstance();
 
 	@PostConstruct
 	public void Init(){
+
+
+		setSelectItemProductBacklog(new ItemProductBacklog());
+
 		produtoSelecionado = produtoService.find(buscaIdURL());
 		itemProductBacklog = new ItemProductBacklog();
-		selectItemProductBacklog= new ItemProductBacklog();
+		//		selectItemProductBacklog = (ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item");
 		listItensProduto= itemProductBacklogService.findItensProduto(buscaIdURL());
 		//setListProduto(produtoService.findAll());
-		setListItensProductBacklog(findAll());
+		//		setListItensProductBacklog(findAll());
 	}
 
 	public void create(){
 		gerarData();
-		itemProductBacklog.setProduto(produtoSelecionado);
+
 		itemProductBacklogService.create(itemProductBacklog);
+		produtoSelecionado.getListItensProduct().add(itemProductBacklog);
+		itemProductBacklog.setProduto(produtoSelecionado);
+		this.itemProductBacklogService.update(itemProductBacklog);
+		redirect();
 	}
 
-
-	public void remove() {
-		this.itemProductBacklogService.remove(selectItemProductBacklog);
+	/**
+	 * Método não deleta apropriadamente(Consertar)
+	 * @exception IllegalArgumentException:  Entity must be managed to call remove
+	 * @param itemProductBacklog
+	 */
+	public void delete(ItemProductBacklog itemProductBacklog) {
+		//		ItemProductBacklog itemPB = find(itemProductBacklog.getId());
+		itemProductBacklog.setProduto(null);
+		itemProductBacklogService.update(itemProductBacklog); 
+		//		itemProductBacklogService.remove(itemProductBacklog);
+		redirect();
 	}
 
 	public void update(){
-		this.itemProductBacklogService.update(selectItemProductBacklog);
+		itemProductBacklogService.update(selectItemProductBacklog);
+		redirect();
 	}
-
-
 
 	private void gerarData() {
 		Calendar calendar = GregorianCalendar.getInstance();
@@ -79,20 +98,30 @@ public class ItemProductBacklogController implements Serializable {
 		dateFormat.format(calendar.getTime());
 		calendar = dateFormat.getCalendar();
 		itemProductBacklog.setDataInicio(calendar.getTime());
-
 	}
-
 
 	private Long buscaIdURL(){
 
-		FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String idAux = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
-		Long convertID = Long.parseLong(idAux);
+		if(idAux != null)
+			idProduto = Long.parseLong(idAux);
 
-		return convertID;
+		return idProduto;
 	}
 
-	
+	public void redirect(){
+		try {//Redirect para atualização das informações
+			FacesContext.getCurrentInstance().getExternalContext()
+			.redirect("/Scream/itensProduto/indexNovo.xhtml?id="+idProduto);
+		} catch (IOException e) {
+			JsfUtil.addErrorMessage("Aconteceu algo inesperado ao apagar este produto");
+		}
+	}
+
+	public void manterProduto() {
+		contexto.getExternalContext().getSessionMap().put("item", selectItemProductBacklog);
+	}
+
 	//Pesquisas no Banco
 
 	public int count() {
@@ -153,7 +182,9 @@ public class ItemProductBacklogController implements Serializable {
 		this.listProduto = listProduto;
 	}
 
-	
+	public static Long idProduto;
+
+
 	public List<ItemProductBacklog> getListItensProduto() {
 		return listItensProduto;
 	}

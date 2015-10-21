@@ -58,6 +58,14 @@ public class ProdutoController implements Serializable {
     public ProdutoController() {
     }
 
+    @PostConstruct
+    public void init() {
+    	itemProductBacklog = new ItemProductBacklog();
+    	listProduto = service.findAll();
+    	produtoSelect = (Produto) contexto.getExternalContext().getSessionMap().get("produto");
+    	
+    }
+    
     public void create() {
         if (ss.isAuthorized("SCRUM_MASTER")) {
             registrarData();
@@ -109,7 +117,7 @@ public class ProdutoController implements Serializable {
             FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
 
             FacesContext.getCurrentInstance().getExternalContext()
-                    .redirect("/Scream/itensProduto/index.xhtml");
+                    .redirect("/Scream/itensProduto/indexNovo.xhtml");
         } catch (IOException ex) {
             JsfUtil.addErrorMessage(ex, "Pagina não encontrada");
             Logger.getLogger(ContaController.class.getName()).log(Level.SEVERE,
@@ -117,14 +125,6 @@ public class ProdutoController implements Serializable {
         }
     }
 
-    @PostConstruct
-    public void init() {
-        itemProductBacklog = new ItemProductBacklog();
-        //produtoSelect= new Produto();
-        listProduto = service.findAll();
-        produtoSelect = (Produto) contexto.getExternalContext().getSessionMap().get("produto");
-
-    }
 
     public void handleReorder(DashboardReorderEvent event) {
         FacesMessage message = new FacesMessage();

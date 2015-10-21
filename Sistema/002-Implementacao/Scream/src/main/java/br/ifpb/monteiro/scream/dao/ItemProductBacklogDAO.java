@@ -7,8 +7,6 @@ package br.ifpb.monteiro.scream.dao;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
 import br.ifpb.monteiro.scream.entities.ItemProductBacklog;
 
 /**
