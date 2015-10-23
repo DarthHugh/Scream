@@ -1,30 +1,202 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:f="http://xmlns.jcp.org/jsf/core"
-                template="/WEB-INF/template/template.xhtml">
-                    
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    </h:head>
-        
-    <ui:define name="content">
-        
-        <h:form>
-            <div style="float: none; position: relative; text-align: center; 
-                 font-size: 18px; color: #0274A8">
-                <p:outputLabel value="Projetos" />
-                <p:button icon="ui-icon-help" 
-                          style="font-size: 14px; position: relative; left: 280px"/>
-                <p:button icon="ui-icon-circle-plus" outcome="/projeto/novoProjeto.xhtml" 
-                          style="font-size: 14px; position: relative; left: 280px"/>
-                    
-            </div>
-               
-        </h:form>
-    </ui:define>
-        
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	template="/WEB-INF/template/template.xhtml">
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</h:head>
+
+	<ui:define name="content">
+
+		<div
+			style="margin-left: 10%; margin-right: 10%; text-align: center; width: 80%; padding: 10px;">
+			<h:form id="formProjeto">
+				<p:outputLabel value="Projetos"
+					style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8" />
+				<p:dataTable id="datatableProjeto"
+					value="#{projetoController.listProjeto}" var="projeto"
+					widgetVar="tabelaProjeto" paginatorAlwaysVisible="false"
+					style="margin-top: 20px;" rows="10"
+					emptyMessage="Nenhum projeto foi encontrado" paginator="true"
+					paginatorPosition="bottom"
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}  {PageLinks} 
+                             {NextPageLink}  {LastPageLink}  {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,20, 50,100,200" rowKey="projeto.id">
+
+					<f:facet name="header">
+						<p:outputPanel>
+							<h:outputText value="Busca Projeto:" />
+							<p:inputText id="globalFilter"
+								onkeyup="PF('tabelaProjeto').filter()"
+								placeholder="Informe qualquer dado do projeto do produto" />
+
+
+							<p:commandButton id="novoProjeto" value="Novo"
+								process="datatableProjeto" update=":formProjeto"
+								icon="ui-icon-circle-plus"
+								oncomplete="PF('novoProjetoDialog').show()" />
+						</p:outputPanel>
+					</f:facet>
+
+
+					<p:column id="columnNome" headerText="Nome"
+						filterBy="#{projeto.nome}" filterMatchMode="contains"
+						filterStyle="display:none" style=" width:200px">
+						<h:outputText value="#{projeto.nome}" />
+					</p:column>
+
+					<p:column id="columnDataInicio" headerText="Data de Inicio"
+						filterBy="#{projeto.dataInicio}" filterMatchMode="contains"
+						filterStyle="display:none">
+						<h:outputText value="#{projeto.dataInicio}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column id="columnDataFinal" headerText="Data de Termino"
+						filterBy="#{projeto.dataTermino}" filterMatchMode="contains"
+						filterStyle="display:none">
+						<h:outputText value="#{projeto.dataTermino}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column id="columnDuracaoSprint" headerText="Duração da Sprint"
+						filterBy="#{projeto.sprintDuration}" filterMatchMode="contains"
+						filterStyle="display:none">
+						<h:outputText value="#{projeto.sprintDuration}" />
+					</p:column>
+
+					<p:column id="columnFinalizado" headerText="Finalizado"
+						filterBy="#{projeto.isCompleted}" filterMatchMode="contains"
+						filterStyle="display:none">
+						<h:outputText value="#{projeto.isCompleted}" >
+						
+						</h:outputText>
+					</p:column>
+
+					<p:column id="columnAcao" headerText="Ações" style=" width:190px">
+
+						<p:button value="Ver Teste de Aceitação" wicon="ui-icon-pencil"
+							outcome="/testeAceitacao/index.xhtml" style="font-size:14px">
+							<!--process="datatableItensProduto"-->
+
+							<f:param name="id" value="#{item.id}" />
+
+						</p:button>
+
+						<p:commandButton id="buttonEditar" value="Editar"
+							process="datatableProjeto"
+							update=":formProjeto:painelProjetoDialog" icon="ui-icon-pencil"
+							action="#{projetoController.manterProjeto()}" style="font-size:14px"
+							oncomplete="PF('editeProjetoDialog').show()">
+
+							<f:setPropertyActionListener value="#{projeto}"
+								target="#{projetoController.projetoSelecionado}" />
+
+						</p:commandButton>
+
+
+						<p:commandButton id="buttonDelete" value="Deletar"
+							process="datatableProjeto" update="datatableProjeto"
+							icon="ui-icon-circle-close"
+							action="#{projetoController.remove(projeto)}" style="font-size:14px">
+							<p:confirm header="Confirmação"
+								message="Deseja excluir esse Projeto?" icon="ui-icon-alert" />
+						</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+							<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
+								icon="ui-icon-check" />
+							<p:commandButton value="Não" type="button"
+								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+						</p:confirmDialog>
+					</p:column>
+				</p:dataTable>
+
+
+				<p:dialog id="editeProjetoDialog" header="Editar Projeto"
+					widgetVar="editeProjetoDialog" resizable="false" draggable="false"
+					showEffect="fade" hideEffect="fade" modal="true"
+					style="font-size: 12px">
+					<p:outputPanel id="painelProjetoDialog">
+						<h:panelGrid style="font-size: 12px">
+
+							<h:outputLabel value="Nome: " />
+							<p:inputText value="#{projetoController.projetoSelecionado.nome}"
+								queryDelay="750" minQueryLength="4" />
+							<p:outputLabel for="dataInicioEdite" value="Data de Inicio" />
+							<p:calendar id="dataInicioEdite"
+								value="#{projetoController.projetoSelecionado.dataInicio}"
+								pattern="dd-MM-yyyy" mask="true" />
+
+							<p:outputLabel for="dataTerminoEdite" value="Data de Termino" />
+							<p:calendar id="dataTerminoEdite"
+								value="#{projetoController.projetoSelecionado.dataTermino}"
+								pattern="dd-MM-yyyy" mask="true" />
+
+							<h:outputLabel value="Duração da Sprint" />
+								<p:inputText maxlength="2" size="2"
+									value="#{projetoController.projetoSelecionado.sprintDuration}" />
+								<h:outputLabel value="Terminado" />
+								<p:selectBooleanCheckbox
+									value="#{projetoController.projetoSelecionado.isCompleted}" />
+						</h:panelGrid>
+
+						<br />
+						<p:commandButton id="buttonUpdate" value="Salvar"
+							icon="ui-icon-disk" action="#{projetoController.update}"
+							oncomplete="PF('editeProjetoDialog').hide()" />
+					</p:outputPanel>
+				</p:dialog>
+
+				<p:dialog id="novoProjetoDialog" header="Criar Projeto"
+					widgetVar="novoProjetoDialog" resizable="false" draggable="false"
+					showEffect="fade" hideEffect="fade" modal="true"
+					style="font-size: 12px">
+
+					<h:panelGrid columns="2" style="font-size: 12px;margin-top: 20px;">
+
+						<h:outputLabel value="Nome: " />
+						<p:inputText value="#{projetoController.projeto.nome}" />
+
+						<p:outputLabel for="dataInicio" value="Data de Inicio" />
+						<p:calendar id="dataInicio"
+							value="#{projetoController.projeto.dataInicio}"
+							pattern="dd-MM-yyyy" mask="true" />
+
+						<p:outputLabel for="dataTermino" value="Data de Termino" />
+						<p:calendar id="dataTermino"
+							value="#{projetoController.projeto.dataTermino}"
+							pattern="dd-MM-yyyy" mask="true" />
+
+
+						<h:outputLabel value="Duração da Sprint " />
+						<p:inputText maxlength="2" size="2"
+							value="#{projetoController.projeto.sprintDuration}" />
+							
+							
+						
+						<h:outputLabel value="Terminado" />
+						<p:selectBooleanCheckbox
+							value="#{projetoController.projeto.isCompleted}" />
+
+					</h:panelGrid>
+
+					<br />
+					<p:commandButton id="buttonSalvar" value="Salvar"
+						icon="ui-icon-disk" update=":formProjeto:datatableProjeto"
+						actionListener="#{projetoController.create}"
+						oncomplete="PF('novoProjetoDialog').hide()" />
+
+				</p:dialog>
+
+			</h:form>
+		</div>
+	</ui:define>
+
 </ui:composition>

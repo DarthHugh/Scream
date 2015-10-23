@@ -51,7 +51,7 @@ public class ProjetoService {
         return projetoDao.findRange(range);
     }
     
-    @Transactional
+    //@Transactional
     public void remove(Projeto entity) {
         this.projetoDao.delete(entity);
     }
