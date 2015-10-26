@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
+
 /**
  *
  * @author Mauricio
@@ -37,7 +39,9 @@ public class DefinicaoDePronto implements Serializable{
 //    @OneToMany(mappedBy = "unimplemented_yet")
 //    private List<already_implemented> already_implemented;
 
+    
     @ManyToOne(cascade=CascadeType.ALL)
+    @CascadeOnDelete
     @JoinColumn(name="projeto_id")
     private Projeto projeto;
     

@@ -62,6 +62,8 @@ public class ProjetoController {
 
 	public void remove(Projeto projetoSelec){
 		projetoService.remove(projetoSelec);
+		redirect();
+		
 	}
 
 	private void registrarData() {
@@ -77,7 +79,7 @@ public class ProjetoController {
 			FacesContext.getCurrentInstance().getExternalContext()
 			.redirect("/Scream/projeto/index.xhtml");
 		} catch (IOException e) {
-			JsfUtil.addErrorMessage("Aconteceu algo inesperado ao apagar este produto");
+			JsfUtil.addErrorMessage("Aconteceu algo inesperado ao apagar este projeto");
 		}
 	}
 

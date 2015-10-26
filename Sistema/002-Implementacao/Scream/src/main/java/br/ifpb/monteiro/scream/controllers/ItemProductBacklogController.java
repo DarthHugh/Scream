@@ -52,14 +52,12 @@ public class ItemProductBacklogController implements Serializable {
 
 	@PostConstruct
 	public void Init(){
-
-
 		//setSelectItemProductBacklog();
 
 		produtoSelecionado = produtoService.find(buscaIdURL());
 		itemProductBacklog = new ItemProductBacklog();
 		selectItemProductBacklog = (ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item");
-		listItensProduto= itemProductBacklogService.findItensProduto(buscaIdURL());
+		listItensProduto = itemProductBacklogService.findItensProduto(buscaIdURL());
 		//setListProduto(produtoService.findAll());
 		//		setListItensProductBacklog(findAll());
 	}

@@ -30,6 +30,9 @@ public class ProjetoDAO extends GenericDAO<Projeto>{
 //		Query queryAltera = getEntityManager().createQuery("UPDATE table definicao_pronto DROP CONSTRAINT fk_definicao_pronto_projeto_id");
 //		queryAltera.executeUpdate();
 
+		Query queryDef = getEntityManager().createNativeQuery("DELETE FROM definicao_pronto WHERE projeto_id = " + entity.getId());
+		queryDef.executeUpdate();
+		
 		Query queryProjeto = getEntityManager().createNativeQuery("DELETE FROM projeto WHERE id = " + entity.getId());
 		queryProjeto.executeUpdate();	
 
