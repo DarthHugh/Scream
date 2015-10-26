@@ -31,13 +31,13 @@ public class ProjetoController {
 
 	private Projeto projetoSelecionado;
 	private List<Projeto> listProjeto;
-	
+
 	FacesContext contexto = FacesContext.getCurrentInstance();
 
 	@PostConstruct
 	public void Init(){
 		projeto = new Projeto();
-		projetoSelecionado= (Projeto) contexto.getExternalContext().getSessionMap().get("projeto");
+		projetoSelecionado= manterProjeto();
 		listProjeto=projetoService.findAll();
 	}
 
@@ -46,6 +46,7 @@ public class ProjetoController {
 		registrarData();
 		projetoService.create(projeto);
 		JsfUtil.addSuccessMessage("Projeto adicionado com sucesso!");
+		redirect();
 
 	}
 
@@ -62,14 +63,14 @@ public class ProjetoController {
 	public void remove(Projeto projetoSelec){
 		projetoService.remove(projetoSelec);
 	}
-	
+
 	private void registrarData() {
-        Calendar calendar = GregorianCalendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        dateFormat.format(calendar.getTime());
-        calendar = dateFormat.getCalendar();
-        projeto.setDataInicio(calendar.getTime());
-    }
+		Calendar calendar = GregorianCalendar.getInstance();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		dateFormat.format(calendar.getTime());
+		calendar = dateFormat.getCalendar();
+		projeto.setDataInicio(calendar.getTime());
+	}
 
 	public void redirect(){
 		try {//Redirect para atualização das informações
@@ -111,7 +112,11 @@ public class ProjetoController {
 	public void setProjetoSelecionado(Projeto projetoSelecionado) {
 		this.projetoSelecionado = projetoSelecionado;
 	}
-	public void manterProjeto() {
-        contexto.getExternalContext().getSessionMap().put("projeto", projetoSelecionado);
-    }
+	public Projeto manterProjeto() {
+		Projeto aux = (Projeto) contexto.getExternalContext().getSessionMap().put("projeto", projetoSelecionado);
+		if(aux==null)
+			return new Projeto();
+		else 
+			return aux;
+	}
 }

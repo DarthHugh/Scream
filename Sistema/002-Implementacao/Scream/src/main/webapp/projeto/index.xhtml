@@ -190,7 +190,7 @@
 					<br />
 					<p:commandButton id="buttonSalvar" value="Salvar"
 						icon="ui-icon-disk" update=":formProjeto:datatableProjeto"
-						actionListener="#{projetoController.create}"
+						action="#{projetoController.create()}"
 						oncomplete="PF('novoProjetoDialog').hide()" />
 
 				</p:dialog>
