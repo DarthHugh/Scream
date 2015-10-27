@@ -51,8 +51,8 @@ public class TesteAceitacaoService {
         return criterioAceitacaoDAO.count();
     }
     
-    public TesteAceitacao find(Long id) {
-        return (TesteAceitacao) criterioAceitacaoDAO.findById(id);
+    public List<TesteAceitacao> find(Long id) {
+        return  this.criterioAceitacaoDAO.findTesteAceitacao(id);
     }
     
     public List<TesteAceitacao> findAll() {

@@ -44,8 +44,6 @@ public class ItemProductBacklogController implements Serializable {
 
 	private ItemProductBacklog selectItemProductBacklog;
 
-	private List<ItemProductBacklog> listItensProductBacklog;
-
 	private List<ItemProductBacklog> listItensProduto;
 
 	FacesContext contexto = FacesContext.getCurrentInstance();
@@ -56,10 +54,13 @@ public class ItemProductBacklogController implements Serializable {
 
 		produtoSelecionado = produtoService.find(buscaIdURL());
 		itemProductBacklog = new ItemProductBacklog();
-		selectItemProductBacklog = (ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item");
-		listItensProduto = itemProductBacklogService.findItensProduto(buscaIdURL());
-		//setListProduto(produtoService.findAll());
-		//		setListItensProductBacklog(findAll());
+
+		if(contexto.getExternalContext().getSessionMap().get("item")==null){
+			setSelectItemProductBacklog(new ItemProductBacklog());
+		}else{
+			setSelectItemProductBacklog((ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item"));
+		} 
+		listItensProduto= itemProductBacklogService.findItensProduto(buscaIdURL());
 	}
 
 	public void create(){
@@ -73,30 +74,24 @@ public class ItemProductBacklogController implements Serializable {
 	}
 
 	/**
-	 * MÃ©todo nÃ£o deleta apropriadamente(Consertar)
-	 * @exception IllegalArgumentException:  Entity must be managed to call remove
+	 * Método remove o ItemProductBacklog selecionado do Banco de dados
 	 * @param itemProductBacklog
 	 */
 	public void delete(ItemProductBacklog itemProductBacklog) {
-		//		ItemProductBacklog itemPB = find(itemProductBacklog.getId());
-		itemProductBacklog.setProduto(null);
-		itemProductBacklogService.update(itemProductBacklog); 
-		//		itemProductBacklogService.remove(itemProductBacklog);
+		itemProductBacklogService.remove(itemProductBacklog);
 		redirect();
 	}
 
-//	public void update(){
-//		System.out.println(selectItemProductBacklog.getId());
-//	}
 
-		public void update(){
-			if(selectItemProductBacklog.getId() == null){
-				System.out.println("Deu Merge");
-			}else{			
-				itemProductBacklogService.update(selectItemProductBacklog);			
-			}
-			redirect();
+
+	public void update(){
+		if(selectItemProductBacklog.getId() == null){
+			System.out.println("Deu Merge");
+		}else{			
+			itemProductBacklogService.update(selectItemProductBacklog);			
 		}
+		redirect();
+	}
 
 	private void gerarData() {
 		Calendar calendar = GregorianCalendar.getInstance();
@@ -116,13 +111,25 @@ public class ItemProductBacklogController implements Serializable {
 	}
 
 	public void redirect(){
-		try {//Redirect para atualizaÃ§Ã£o das informaÃ§Ãµes
+		try {//Redirect para atualização das informações
 			FacesContext.getCurrentInstance().getExternalContext()
 			.redirect("/Scream/itensProduto/index.xhtml?id="+idProduto);
 		} catch (IOException e) {
 			JsfUtil.addErrorMessage("Aconteceu algo inesperado ao apagar este produto");
 		}
 	}
+	
+//	public void atualizarId(){
+//		if(contexto.getExternalContext().getSessionMap().get("item")==null){
+//			setSelectItemProductBacklog(new ItemProductBacklog());
+//		}else{
+//			setSelectItemProductBacklog((ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item"));
+//			idItemPB = getSelectItemProductBacklog().getId();
+//		}
+//		
+//		
+//		System.out.println(idItemPB);
+//	}
 
 	public void manterItem() {
 		contexto.getExternalContext().getSessionMap().put("item", selectItemProductBacklog);
@@ -156,14 +163,6 @@ public class ItemProductBacklogController implements Serializable {
 		this.selectItemProductBacklog = selectItemProductBacklog;
 	}
 
-	public List<ItemProductBacklog> getListItensProductBacklog() {
-		return listItensProductBacklog;
-	}
-
-	public void setListItensProductBacklog(List<ItemProductBacklog> listItensProductBacklog) {
-		this.listItensProductBacklog = listItensProductBacklog;
-	}
-
 	public ItemProductBacklog getItemProductBacklog() {
 		return itemProductBacklog;
 	}
@@ -188,9 +187,10 @@ public class ItemProductBacklogController implements Serializable {
 		this.listProduto = listProduto;
 	}
 
+	
 	public static Long idProduto;
-//	
-//	public static Long idItemPB;
+	//	
+	//	public static Long idItemPB;
 
 
 	public List<ItemProductBacklog> getListItensProduto() {

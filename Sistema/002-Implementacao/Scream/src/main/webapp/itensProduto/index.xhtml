@@ -60,7 +60,7 @@
 						<h:outputText value="#{item.valorGanho}" />
 					</p:column>
 
-					<p:column id="columnComplexidade" headerText="Valor Ganho"
+					<p:column id="columnComplexidade" headerText="Complexidade"
 						filterBy="#{item.Complexidade}" filterMatchMode="contains"
 						filterStyle="display:none">
 						<h:outputText value="#{item.complexidade}" />
@@ -81,28 +81,32 @@
 
 					<p:column id="columnAcao" headerText="Ações" style=" width:170px;">
 
-						<p:button value="Ver Teste de Aceitação" icon="ui-icon-pencil"
-							outcome="/testeAceitacao/index.xhtml">
+						<!--    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo-->
+
+						<p:commandButton value="Ver Teste de Aceitação"
+							process="datatableItensProduto" update=":formItensDialog"
+							action="#{testeAceitacaoController.manterItem()}"
+							icon="ui-icon-pencil" oncomplete="PF('itemDialogHue').show()">
+							<f:setPropertyActionListener value="#{item}"
+								target="#{testeAceitacaoController.selectItemProductBacklog}" />
 							<!--process="datatableItensProduto"-->
-
-							<f:param name="id" value="#{item.id}" />
-
-						</p:button>
+							<f:param name="idItem" value="#{item.id}" />
+						</p:commandButton>
 
 						<!--    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo-->
 
 						<p:commandButton value="Editar" process="datatableItensProduto"
 							update=":formItensDialog" icon="ui-icon-pencil"
 							action="#{itemProductBacklogController.manterItem()}"
-							oncomplete="PF('itemDialog').show()" >
-							
+							oncomplete="PF('itemDialog').show()">
+
 
 							<f:setPropertyActionListener value="#{item}"
 								target="#{itemProductBacklogController.selectItemProductBacklog}" />
 
 						</p:commandButton>
 
-						<!--    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo-->
+
 
 						<p:commandButton style="font-size: 13px;" value="Deletar"
 							icon="ui-icon-circle-close"
@@ -153,13 +157,96 @@
 								value="#{itemProductBacklogController.selectItemProductBacklog.aceitoPO}" />
 
 						</h:panelGrid>
-
-
 						<br />
-						<p:commandButton value="Salvar" icon="ui-icon-disk"
+						<p:commandButton value="Salvar" id="editItemProduto"
+							icon="ui-icon-disk" update=":formItensDialog"
 							action="#{itemProductBacklogController.update}"
 							oncomplete="PF('itemDialog').hide()" />
 					</p:outputPanel>
+				</p:dialog>
+
+
+				<p:dialog id="itemDialogHue" header="Teste de Aceitação"
+					widgetVar="itemDialogHue" resizable="false" draggable="false"
+					showEffect="fade" hideEffect="fade" modal="true"
+					style="font-size: 12px" height="50%" width="50%">
+					<h:panelGrid columns="5" style="font-size: 12px">
+
+
+						<h:outputText value="Novo Teste de aceitação: " />
+						<p:inputText maxlength="30" size="40"
+							value="#{testeAceitacaoController.criterioAceitacao.descricao}"
+							placeholder="Descrição do teste de aceitação" />
+
+						<h:outputText value="Estado do Teste: " />
+						<p:selectBooleanCheckbox
+							value="#{testeAceitacaoController.criterioAceitacao.estadoTeste}"
+							style="margin-left: 40%;" />
+						<p:commandButton value="Criar" update=":formItensDialog"
+							icon="ui-icon-circle-plus"
+							action="#{testeAceitacaoController.create}"
+							oncomplete="PF('itemDialogHue').show()" />
+
+					</h:panelGrid>
+					<h:panelGrid columns="1" style="font-size: 12px">
+
+						<p:dataTable id="datatableTesteAceitacao"
+							value="#{testeAceitacaoController.listAceitacao}" var="teste"
+							widgetVar="tabelaItemProdutoHue" paginatorAlwaysVisible="false"
+							style="margin-top: 20px;" rows="10"
+							emptyMessage="Nenhum item encontrado" paginator="true"
+							paginatorPosition="bottom" editable="true"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}  {PageLinks} 
+                             {NextPageLink}  {LastPageLink}  {RowsPerPageDropdown}"
+							rowsPerPageTemplate="10,20, 50,100,200" rowKey="item.id">
+
+							<p:ajax event="rowEdit"
+								listener="#{testeAceitacaoController.onRowEdit}"
+								oncomplete="PF('itemDialogHue').show()" />
+							<p:ajax event="rowEditCancel"
+								listener="#{testeAceitacaoController.onRowCancel}"
+								oncomplete="PF('itemDialogHue').show()" />
+
+
+
+							<p:column id="testecolumnDescricao" headerText="Prioridade"
+								filterBy="#{teste.descricao}" filterMatchMode="contains"
+								filterStyle="display:none" width="70%">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{teste.descricao}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText id="testeId" value="#{teste.descricao}"
+											label="Descricao" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column id="testechecklist" filterBy="#{teste.estadoTeste}"
+								headerText="Estado do teste" filterMatchMode="contains"
+								filterStyle="display:none">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{teste.estadoTeste}"
+											style="margin-left: 30%;" />
+									</f:facet>
+									<f:facet name="input">
+										<p:selectBooleanCheckbox disabled="false"
+											value="#{teste.estadoTeste}" style="margin-left: 40%;" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+
+							<p:column style="width:10%">
+								<p:rowEditor />
+								<p:commandButton update=":formItensDialog"
+									icon="ui-icon-trash"
+									action="#{testeAceitacaoController.remove(teste)}"
+									oncomplete="PF('itemDialogHue').show()" style=""/>
+							</p:column>
+						</p:dataTable>
+					</h:panelGrid>
 				</p:dialog>
 
 
@@ -200,7 +287,6 @@
 							oncomplete="PF('novoItemDialog').hide()" />
 					</p:outputPanel>
 				</p:dialog>
-
 			</h:form>
 		</div>
 
