@@ -34,7 +34,7 @@
 							<h:outputText value="Busca Item:" />
 							<p:inputText id="globalFilter"
 								onkeyup="PF('tabelaProduto').filter()"
-								placeholder="Informe qualquer dado do item do produto" />
+								placeholder="Informe qualquer dado do item do produto" style="width: 400px"/>
 
 							<p:commandButton value="Novo" process="datatableItensProduto"
 								update=":formItensDialog" icon="ui-icon-circle-plus"
@@ -83,10 +83,10 @@
 
 						<!--    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo-->
 
-						<p:commandButton value="Ver Teste de Aceitação"
+						<p:commandButton style="font-size: 13px;" value="Ver Teste de Aceitação"
 							process="datatableItensProduto" update=":formItensDialog"
 							action="#{testeAceitacaoController.manterItem()}"
-							icon="ui-icon-pencil" oncomplete="PF('itemDialogHue').show()">
+							icon="ui-icon-carat-1-nw" oncomplete="PF('itemDialogHue').show()">
 							<f:setPropertyActionListener value="#{item}"
 								target="#{testeAceitacaoController.selectItemProductBacklog}" />
 							<!--process="datatableItensProduto"-->
@@ -95,7 +95,7 @@
 
 						<!--    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo-->
 
-						<p:commandButton value="Editar" process="datatableItensProduto"
+						<p:commandButton style="font-size: 13px;" value="Editar" process="datatableItensProduto"
 							update=":formItensDialog" icon="ui-icon-pencil"
 							action="#{itemProductBacklogController.manterItem()}"
 							oncomplete="PF('itemDialog').show()">
@@ -113,7 +113,7 @@
 							action="#{itemProductBacklogController.delete(item)}">
 
 							<p:confirm header="Confirmação"
-								message="Deseja excluir esse item do produto?"
+								message="Essa ação resultará na perda de todos os componentes relacionados a este item do produto. Deseja continuar?"
 								icon="ui-icon-alert" />
 
 						</p:commandButton>
@@ -173,15 +173,16 @@
 					<h:panelGrid columns="5" style="font-size: 12px">
 
 
-						<h:outputText value="Novo Teste de aceitação: " />
+						<h:outputText value="Novo Teste de aceitação:* " />
 						<p:inputText maxlength="30" size="40"
 							value="#{testeAceitacaoController.criterioAceitacao.descricao}"
-							placeholder="Descrição do teste de aceitação" />
+							placeholder="Descrição do teste de aceitação" required="true" requiredMessage="Você não pode criar um teste sem descrição."/>
 
 						<h:outputText value="Estado do Teste: " />
 						<p:selectBooleanCheckbox
 							value="#{testeAceitacaoController.criterioAceitacao.estadoTeste}"
 							style="margin-left: 40%;" />
+						<br/>
 						<p:commandButton value="Criar" update=":formItensDialog"
 							icon="ui-icon-circle-plus"
 							action="#{testeAceitacaoController.create}"

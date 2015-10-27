@@ -33,7 +33,7 @@
 							<h:outputText value="Busca Projeto:" />
 							<p:inputText id="globalFilter"
 								onkeyup="PF('tabelaProjeto').filter()"
-								placeholder="Informe qualquer dado do projeto do produto" />
+								placeholder="Informe qualquer dado do projeto do produto" style="width: 400px"/>
 
 
 							<p:commandButton id="novoProjeto" value="Novo"
@@ -82,8 +82,8 @@
 
 					<p:column id="columnAcao" headerText="Ações" style=" width:190px">
 
-						<p:button value="Ver Teste de Aceitação" wicon="ui-icon-pencil"
-							outcome="/testeAceitacao/index.xhtml" style="font-size:14px">
+						<p:button value="Ver Product Backlog" wicon="ui-icon-carat-1-nw"
+							outcome="/testeAceitacao/index.xhtml" style="font-size:14px" icon="ui-icon-carat-1-nw" disabled="true">
 							<!--process="datatableItensProduto"-->
 
 							<f:param name="id" value="#{item.id}" />
@@ -124,7 +124,7 @@
 					showEffect="fade" hideEffect="fade" modal="true"
 					style="font-size: 12px">
 					<p:outputPanel id="painelProjetoDialog">
-						<h:panelGrid style="font-size: 12px">
+						<h:panelGrid columns="2" style="font-size: 12px">
 
 							<h:outputLabel value="Nome: " />
 							<p:inputText value="#{projetoController.projetoSelecionado.nome}"

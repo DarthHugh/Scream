@@ -75,6 +75,12 @@
                         <p:column id="columnAcao" headerText="Ações" style=" width:170px;">
                             <p:panelGrid>
 
+
+                                <p:button style="font-size: 13px;" value="Ver Itens do Produto"
+                                          icon="ui-icon-carat-1-nw" outcome="/itensProduto/index.xhtml">
+                                    <f:param name="id" value="#{produto.id}" />
+                                </p:button>
+
                                 <p:commandButton style="font-size: 13px;" value="Editar"
                                                  process="datatableProdutos" update=":formProduto:produtoDetail"
                                                  icon="ui-icon-pencil"  action="#{produtoController.manterProduto()}"
@@ -88,18 +94,12 @@
                                                  icon="ui-icon-circle-close"
                                                  action="#{produtoController.delete(produto)}">
                                     <p:confirm header="Confirmação"
-                                               message="Deseja excluir esse produto?" icon="ui-icon-alert">
+                                               message="Essa ação resultará na perda de todos os componentes relacionados a este produto. Deseja continuar?" icon="ui-icon-alert">
 
                                     </p:confirm> 
                                 </p:commandButton>
-
-                                <p:button style="font-size: 13px;" value="Ver Itens do Produto"
-                                          icon="ui-icon-carat-1-nw" outcome="/itensProduto/index.xhtml">
-                                    <f:param name="id" value="#{produto.id}" />
-                                </p:button>
-
                                 <p:confirmDialog global="true" showEffect="fade"
-                                                 hideEffect="fade">
+                                                 hideEffect="fade" >
                                     <h:form prependId="false">
                                         <p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
                                                          icon="ui-icon-check" >
