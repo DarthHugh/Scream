@@ -17,11 +17,18 @@ public class AceitacaoItemPBTest {
 	    public static void setUpBeforeClass() throws Exception{
 	        driver = new FirefoxDriver();
 	        driver.get("localhost:8080/Scream/");
-	        driver.findElement(By.id("formularioLogin:username")).sendKeys("adm");
-	        driver.findElement(By.id("formularioLogin:senha")).sendKeys("123");
-	        driver.findElement(By.id("formularioLogin:botaoEntrar")).click();
+//	        driver.findElement(By.id("formularioLogin:username")).sendKeys("UsuarioTeste");
+//	        driver.findElement(By.id("formularioLogin:senha")).sendKeys("minhasenha123");
+//	        driver.findElement(By.id("formularioLogin:botaoEntrar")).click();
 //	        driver.get("localhost:8080/Scream/produto/index.xhtml");
-	        driver.findElement(By.id("formProduto:verItens")).click();
+//	        driver.findElement(By.id("formProduto:verItens")).click();
+	        driver.findElement(By.id("formularioLogin:username")).clear();
+	        driver.findElement(By.id("formularioLogin:username")).sendKeys("UsuarioTeste");
+	        driver.findElement(By.id("formularioLogin:password")).clear();
+	        driver.findElement(By.id("formularioLogin:password")).sendKeys("minhasenha123");
+	        driver.findElement(By.id("formularioLogin:botaoEntrar")).click();
+	        driver.findElement(By.xpath("//div[@id='j_idt17:j_idt18']/ul/li[2]/a/span")).click();
+	        driver.findElement(By.id("formProduto:datatableProdutos:0:j_idt40")).click();
 	    }
 	    
 	 @Test

@@ -74,7 +74,7 @@ public class ItemProductBacklogController implements Serializable {
 	}
 
 	/**
-	 * Método remove o ItemProductBacklog selecionado do Banco de dados
+	 * Mï¿½todo remove o ItemProductBacklog selecionado do Banco de dados
 	 * @param itemProductBacklog
 	 */
 	public void delete(ItemProductBacklog itemProductBacklog) {
@@ -111,7 +111,7 @@ public class ItemProductBacklogController implements Serializable {
 	}
 
 	public void redirect(){
-		try {//Redirect para atualização das informações
+		try {//Redirect para atualizaï¿½ï¿½o das informaï¿½ï¿½es
 			FacesContext.getCurrentInstance().getExternalContext()
 			.redirect("/Scream/itensProduto/index.xhtml?id="+idProduto);
 		} catch (IOException e) {

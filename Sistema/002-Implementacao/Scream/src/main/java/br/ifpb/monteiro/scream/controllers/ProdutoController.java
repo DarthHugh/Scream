@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -24,7 +25,6 @@ import br.ifpb.monteiro.scream.entities.Produto;
 import br.ifpb.monteiro.scream.services.ProdutoService;
 import br.ifpb.monteiro.scream.services.SecurityService;
 import br.ifpb.monteiro.scream.util.jsf.JsfUtil;
-import javax.enterprise.inject.Model;
 
 /**
  *
@@ -67,15 +67,15 @@ public class ProdutoController implements Serializable {
     }
     
     public void create() {
-        if (ss.isAuthorized("SCRUM_MASTER")) {
+        //if (ss.isAuthorized("SCRUM_MASTER")) {
             registrarData();
             service.create(produto);
             this.produto = new Produto();
             JsfUtil.addSuccessMessage("Produto Criado com Sucesso");
             redirect();
-        } else {
-            JsfUtil.addErrorMessage("Você não tem permissão para criar um produto");
-        }
+//        } else {
+//            JsfUtil.addErrorMessage("Você não tem permissão para criar um produto");
+//        }
 
     }
 
@@ -88,14 +88,14 @@ public class ProdutoController implements Serializable {
     }
 
     public void delete(Produto produtoSelect) {
-        if (ss.isAuthorized("SCRUM_MASTER")) {
-            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+//        if (ss.isAuthorized("SCRUM_MASTER")) {
+//            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
             JsfUtil.addSuccessMessage("Produto Apagado com Sucesso");
             service.remove(produtoSelect);
             redirect();
-        } else {
-            JsfUtil.addErrorMessage("Você não tem permissão para apagar o produto");
-        }
+//        } else {
+//            JsfUtil.addErrorMessage("Você não tem permissão para apagar o produto");
+//        }
 
     }
 

@@ -1,5 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
@@ -8,7 +9,7 @@
 	template="/WEB-INF/template/template.xhtml">
 
 	<h:head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 	</h:head>
 
 	<ui:define name="content">
@@ -18,23 +19,23 @@
 			<h:form id="formItensDialog">
 				<p:outputLabel
 					value="Itens do #{itemProductBacklogController.produto.nome}"
-					style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8" />
+					style="float: none; position:relative; text-align: center;font-size: 18px; color: #0274A8" />
 				<p:dataTable id="datatableItensProduto"
 					value="#{itemProductBacklogController.listItensProduto}" var="item"
 					widgetVar="tabelaItemProduto" paginatorAlwaysVisible="false"
 					style="margin-top: 20px;" rows="10"
 					emptyMessage="Nenhum item encontrado" paginator="true"
 					paginatorPosition="bottom"
-					paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}  {PageLinks} 
-                             {NextPageLink}  {LastPageLink}  {RowsPerPageDropdown}"
-					rowsPerPageTemplate="10,20, 50,100,200" rowKey="item.id">
+					paginatorTemplate="{CurrentPageReport} {FirstPageLink}{PreviousPageLink}  {PageLinks}{NextPageLink}  {LastPageLink}{RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,20,50,100,200" rowKey="item.id">
 
 					<f:facet name="header">
 						<p:outputPanel>
 							<h:outputText value="Busca Item:" />
 							<p:inputText id="globalFilter"
 								onkeyup="PF('tabelaProduto').filter()"
-								placeholder="Informe qualquer dado do item do produto" style="width: 400px"/>
+								placeholder="Informe qualquer dado do item do produto" />
+
 
 							<p:commandButton value="Novo" process="datatableItensProduto"
 								update=":formItensDialog" icon="ui-icon-circle-plus"
@@ -81,24 +82,27 @@
 
 					<p:column id="columnAcao" headerText="Ações" style=" width:170px;">
 
-						<!--    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo-->
+						<!--ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo-->
 
-						<p:commandButton style="font-size: 13px;" value="Ver Teste de Aceitação"
+						<p:commandButton value="Ver Teste de Aceitação"
 							process="datatableItensProduto" update=":formItensDialog"
 							action="#{testeAceitacaoController.manterItem()}"
-							icon="ui-icon-carat-1-nw" oncomplete="PF('itemDialogHue').show()">
+							icon="ui-icon-pencil" oncomplete="PF('itemDialogHue').show()">
+
 							<f:setPropertyActionListener value="#{item}"
 								target="#{testeAceitacaoController.selectItemProductBacklog}" />
+
 							<!--process="datatableItensProduto"-->
 							<f:param name="idItem" value="#{item.id}" />
 						</p:commandButton>
 
-						<!--    ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo-->
+						<!--ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo-->
 
-						<p:commandButton style="font-size: 13px;" value="Editar" process="datatableItensProduto"
+						<p:commandButton value="Editar" process="datatableItensProduto"
 							update=":formItensDialog" icon="ui-icon-pencil"
 							action="#{itemProductBacklogController.manterItem()}"
 							oncomplete="PF('itemDialog').show()">
+
 
 
 							<f:setPropertyActionListener value="#{item}"
@@ -113,15 +117,17 @@
 							action="#{itemProductBacklogController.delete(item)}">
 
 							<p:confirm header="Confirmação"
-								message="Essa ação resultará na perda de todos os componentes relacionados a este item do produto. Deseja continuar?"
+								message="Deseja excluir esse item do produto?"
 								icon="ui-icon-alert" />
 
 						</p:commandButton>
 
 
 						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+
 							<p:commandButton value="Sim" styleClass="ui-confirmdialog-yes"
 								icon="ui-icon-check" />
+
 							<p:commandButton value="Não" type="button"
 								styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 						</p:confirmDialog>
@@ -137,6 +143,7 @@
 						<h:panelGrid columns="2" style="font-size: 12px">
 
 							<h:outputLabel value="Descrição: " />
+
 							<p:inputTextarea rows="5" cols="30"
 								value="#{itemProductBacklogController.selectItemProductBacklog.descricao}"
 								queryDelay="750" minQueryLength="4" />
@@ -173,16 +180,15 @@
 					<h:panelGrid columns="5" style="font-size: 12px">
 
 
-						<h:outputText value="Novo Teste de aceitação:* " />
+						<h:outputText value="Novo Teste de aceitação: " />
 						<p:inputText maxlength="30" size="40"
 							value="#{testeAceitacaoController.criterioAceitacao.descricao}"
-							placeholder="Descrição do teste de aceitação" required="true" requiredMessage="Você não pode criar um teste sem descrição."/>
+							placeholder="Descrição do teste de aceitação" />
 
 						<h:outputText value="Estado do Teste: " />
 						<p:selectBooleanCheckbox
 							value="#{testeAceitacaoController.criterioAceitacao.estadoTeste}"
 							style="margin-left: 40%;" />
-						<br/>
 						<p:commandButton value="Criar" update=":formItensDialog"
 							icon="ui-icon-circle-plus"
 							action="#{testeAceitacaoController.create}"
@@ -197,8 +203,8 @@
 							style="margin-top: 20px;" rows="10"
 							emptyMessage="Nenhum item encontrado" paginator="true"
 							paginatorPosition="bottom" editable="true"
-							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}  {PageLinks} 
-                             {NextPageLink}  {LastPageLink}  {RowsPerPageDropdown}"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink}{PreviousPageLink}  {PageLinks}
+                             {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 							rowsPerPageTemplate="10,20, 50,100,200" rowKey="item.id">
 
 							<p:ajax event="rowEdit"
@@ -214,12 +220,18 @@
 								filterBy="#{teste.descricao}" filterMatchMode="contains"
 								filterStyle="display:none" width="70%">
 								<p:cellEditor>
+
 									<f:facet name="output">
+
 										<h:outputText value="#{teste.descricao}" />
+
 									</f:facet>
+
 									<f:facet name="input">
+
 										<p:inputText id="testeId" value="#{teste.descricao}"
 											label="Descricao" />
+
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
@@ -228,23 +240,29 @@
 								headerText="Estado do teste" filterMatchMode="contains"
 								filterStyle="display:none">
 								<p:cellEditor>
+
 									<f:facet name="output">
+
 										<h:outputText value="#{teste.estadoTeste}"
 											style="margin-left: 30%;" />
+
 									</f:facet>
+
 									<f:facet name="input">
+
 										<p:selectBooleanCheckbox disabled="false"
-											value="#{teste.estadoTeste}" style="margin-left: 40%;" />
+											value="#{teste.estadoTeste}" style="margin-left:40%;" />
+
 									</f:facet>
 								</p:cellEditor>
 							</p:column>
 
 							<p:column style="width:10%">
 								<p:rowEditor />
-								<p:commandButton update=":formItensDialog"
-									icon="ui-icon-trash"
+
+								<p:commandButton update=":formItensDialog" icon="ui-icon-trash"
 									action="#{testeAceitacaoController.remove(teste)}"
-									oncomplete="PF('itemDialogHue').show()" style=""/>
+									oncomplete="PF('itemDialogHue').show()" style="" />
 							</p:column>
 						</p:dataTable>
 					</h:panelGrid>
@@ -260,6 +278,7 @@
 						<h:panelGrid columns="2" style="font-size: 12px">
 
 							<h:outputLabel value="Descrição: " />
+
 							<p:inputTextarea rows="5" cols="30"
 								value="#{itemProductBacklogController.itemProductBacklog.descricao}"
 								queryDelay="750" minQueryLength="4" />
