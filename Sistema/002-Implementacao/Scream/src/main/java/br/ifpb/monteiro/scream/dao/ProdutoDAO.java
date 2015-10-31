@@ -1,6 +1,9 @@
 package br.ifpb.monteiro.scream.dao;
 
+import java.util.List;
+
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 
 import br.ifpb.monteiro.scream.entities.Produto;
 import br.ifpb.monteiro.scream.util.jpa.Transactional;
@@ -41,4 +44,11 @@ public class ProdutoDAO extends GenericDAO<Produto>{
 		queryProduto.executeUpdate();
 	}
 	
+
+    public List<Produto> findAllProduto() {
+		
+		List<Produto> produtos = query("Select p From Produto p Order By p.id");
+		
+		return produtos;
+    }
 }

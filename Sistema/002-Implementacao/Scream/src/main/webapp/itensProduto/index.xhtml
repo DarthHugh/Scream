@@ -137,9 +137,9 @@
 
 				<p:dialog id="itemDialog" header="Editar Item"
 					widgetVar="itemDialog" resizable="false" draggable="false"
-					showEffect="fade" hideEffect="fade" modal="true"
+					showEffect="fade" hideEffect="fade" modal="true" 
 					style="font-size: 12px">
-					<p:outputPanel id="painelItemDialog">
+					<p:outputPanel id="painelItemDialog" >
 						<h:panelGrid columns="2" style="font-size: 12px">
 
 							<h:outputLabel value="Descrição: " />
@@ -200,7 +200,7 @@
 						<p:dataTable id="datatableTesteAceitacao"
 							value="#{testeAceitacaoController.listAceitacao}" var="teste"
 							widgetVar="tabelaItemProdutoHue" paginatorAlwaysVisible="false"
-							style="margin-top: 20px;" rows="10"
+							style="margin-top: 20px;" rows="10" 
 							emptyMessage="Nenhum item encontrado" paginator="true"
 							paginatorPosition="bottom" editable="true"
 							paginatorTemplate="{CurrentPageReport} {FirstPageLink}{PreviousPageLink}  {PageLinks}
@@ -242,10 +242,9 @@
 								<p:cellEditor>
 
 									<f:facet name="output">
-
+									
 										<h:outputText value="#{teste.estadoTeste}"
 											style="margin-left: 30%;" />
-
 									</f:facet>
 
 									<f:facet name="input">

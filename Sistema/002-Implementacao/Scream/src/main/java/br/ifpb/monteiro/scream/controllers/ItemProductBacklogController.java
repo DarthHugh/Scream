@@ -66,11 +66,13 @@ public class ItemProductBacklogController implements Serializable {
 	public void create(){
 		gerarData();
 
-		itemProductBacklogService.create(itemProductBacklog);
-		produtoSelecionado.getListItensProduct().add(itemProductBacklog);
-		itemProductBacklog.setProduto(produtoSelecionado);
-		this.itemProductBacklogService.update(itemProductBacklog);
-		redirect();
+		if(validarItemPB(itemProductBacklog)){
+			itemProductBacklogService.create(itemProductBacklog);
+			produtoSelecionado.getListItensProduct().add(itemProductBacklog);
+			itemProductBacklog.setProduto(produtoSelecionado);
+			this.itemProductBacklogService.update(itemProductBacklog);
+			redirect();
+		}
 	}
 
 	/**
@@ -87,10 +89,19 @@ public class ItemProductBacklogController implements Serializable {
 	public void update(){
 		if(selectItemProductBacklog.getId() == null){
 			System.out.println("Deu Merge");
-		}else{			
-			itemProductBacklogService.update(selectItemProductBacklog);			
+		}else{	
+			if(validarItemPB(itemProductBacklog)){
+			itemProductBacklogService.update(selectItemProductBacklog);
+			}
 		}
 		redirect();
+	}
+
+	public Boolean validarItemPB(ItemProductBacklog itemPB){
+		if(itemPB.getDescricao()==null || itemPB.getDescricao().equals(""))
+			return false;
+
+		return true;
 	}
 
 	private void gerarData() {
@@ -118,18 +129,18 @@ public class ItemProductBacklogController implements Serializable {
 			JsfUtil.addErrorMessage("Aconteceu algo inesperado ao apagar este produto");
 		}
 	}
-	
-//	public void atualizarId(){
-//		if(contexto.getExternalContext().getSessionMap().get("item")==null){
-//			setSelectItemProductBacklog(new ItemProductBacklog());
-//		}else{
-//			setSelectItemProductBacklog((ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item"));
-//			idItemPB = getSelectItemProductBacklog().getId();
-//		}
-//		
-//		
-//		System.out.println(idItemPB);
-//	}
+
+	//	public void atualizarId(){
+	//		if(contexto.getExternalContext().getSessionMap().get("item")==null){
+	//			setSelectItemProductBacklog(new ItemProductBacklog());
+	//		}else{
+	//			setSelectItemProductBacklog((ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item"));
+	//			idItemPB = getSelectItemProductBacklog().getId();
+	//		}
+	//		
+	//		
+	//		System.out.println(idItemPB);
+	//	}
 
 	public void manterItem() {
 		contexto.getExternalContext().getSessionMap().put("item", selectItemProductBacklog);
@@ -187,7 +198,7 @@ public class ItemProductBacklogController implements Serializable {
 		this.listProduto = listProduto;
 	}
 
-	
+
 	public static Long idProduto;
 	//	
 	//	public static Long idItemPB;

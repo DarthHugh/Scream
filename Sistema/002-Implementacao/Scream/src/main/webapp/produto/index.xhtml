@@ -128,7 +128,7 @@
                             <p:outputLabel value="Nome" for="nome" />
                             <p:inputText id="nome" maxlength="50"
                                          placeholder="Nome do Produto"
-                                         value="#{produtoController.produtoSelect.nome}" />
+                                         value="#{produtoController.produtoSelect.nome}" required="true" requiredMessage="O nome do produto é obrigatório"/>
 
                             <p:outputLabel value="Descrição" />
                             <p:inputTextarea rows="5" cols="30"
@@ -139,7 +139,7 @@
                     </p:outputPanel>
 
                     <p:commandButton id="editarProduto" value="Salvar"
-                                     icon="ui-icon-disk" 
+                                     icon="ui-icon-disk" update="@(form:datatableProdutos)"
                                      action="#{produtoController.editar}"
                                       oncomplete="PF('produtoDialog').hide()"/>
                 </p:dialog>
@@ -152,7 +152,7 @@
                         <p:outputLabel value="Nome" for="novoNome" />
                         <p:inputText id="novoNome" maxlength="50"
                                      placeholder="Nome do Produto"
-                                     value="#{produtoController.produto.nome}" />
+                                     value="#{produtoController.produto.nome}" required="true" requiredMessage="O nome do produto é obrigatório"/>
 
                         <p:outputLabel id="novaDescricao" value="Descrição" />
                         <p:inputTextarea rows="5" cols="30"

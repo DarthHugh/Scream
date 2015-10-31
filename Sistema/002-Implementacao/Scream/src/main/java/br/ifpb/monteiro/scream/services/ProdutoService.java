@@ -48,7 +48,7 @@ public class ProdutoService {
     }
     
     public List<Produto> findAll() {
-        return produtoDAO.findAll();
+        return produtoDAO.findAllProduto();
     }
     
     public List<Produto> findRange(int[] range) {
