@@ -1,6 +1,7 @@
 package br.ifpb.monteiro.scream.dao;
 
 import br.ifpb.monteiro.scream.entities.DefinicaoDePronto;
+import br.ifpb.monteiro.scream.entities.Projeto;
 import br.ifpb.monteiro.scream.exceptions.ScreamException;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,5 +26,14 @@ public class DefinicaoDeProntoDAO extends GenericDAO<DefinicaoDePronto>{
             super.create(entity);
         
     }  
+    
+    public List<DefinicaoDePronto> findByProjeto(Projeto entity){
+    	
+    	List<DefinicaoDePronto> definicaoDeProntos= (List<DefinicaoDePronto>) getEntityManager().find(getEntity(), entity);
+
+		return definicaoDeProntos;
+    	
+    }
+    
     
 }
