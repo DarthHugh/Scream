@@ -69,8 +69,16 @@ public class DefinicaoDeProntoService {
         }
     }
     
-    public DefinicaoDePronto find(Long id) {
-        return (DefinicaoDePronto) definicaoDeProntoDAO.findById(id);
+    
+    public DefinicaoDePronto find(Long id){
+    	return definicaoDeProntoDAO.findById(id);
+    }
+    
+    public DefinicaoDePronto findByProject(DefinicaoDeProntoEnum dPSE, Projeto entity){
+    	
+    	DefinicaoDePronto dP = definicaoDeProntoDAO.findById(dPSE, entity);
+    	
+    	return dP;    	
     }
     
     public List<DefinicaoDePronto> findAll() {

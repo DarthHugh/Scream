@@ -72,9 +72,7 @@ public class TesteAceitacaoController {
 	}
 
 	public void update(TesteAceitacao entity){
-		if (validarTA(criterioAceitacao)){
-			this.criterioAceitacaoService.update(entity);
-		}
+		this.criterioAceitacaoService.update(entity);
 	}
 
 	public static Long idItemPB; 
@@ -99,6 +97,7 @@ public class TesteAceitacaoController {
 		FacesMessage msg = new FacesMessage("Teste de aceitação editado", ((TesteAceitacao) event.getObject()).getDescricao());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 		TesteAceitacao t = (TesteAceitacao) event.getObject();
+		
 		if (validarTA(t)){
 			update(t);
 		}

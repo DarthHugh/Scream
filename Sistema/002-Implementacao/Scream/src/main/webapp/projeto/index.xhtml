@@ -33,7 +33,8 @@
 							<h:outputText value="Busca Projeto:" />
 							<p:inputText id="globalFilter"
 								onkeyup="PF('tabelaProjeto').filter()"
-								placeholder="Informe qualquer dado do projeto do produto" style="width: 400px"/>
+								placeholder="Informe qualquer dado do projeto do produto"
+								style="width: 400px" />
 
 
 							<p:commandButton id="novoProjeto" value="Novo"
@@ -72,28 +73,21 @@
 						<h:outputText value="#{projeto.sprintDuration}" />
 					</p:column>
 
-					<p:column id="columnFinalizado" headerText="Finalizado"
-						filterBy="#{projeto.isCompleted}" filterMatchMode="contains"
-						filterStyle="display:none">
-						<h:outputText value="#{projeto.isCompleted}" >
-						
-						</h:outputText>
-					</p:column>
-
 					<p:column id="columnAcao" headerText="Ações" style=" width:190px">
 
-						<p:button value="Ver Product Backlog" wicon="ui-icon-carat-1-nw"
-							outcome="/testeAceitacao/index.xhtml" style="font-size:14px" icon="ui-icon-carat-1-nw" disabled="true">
+						<p:button value="Ver Product Backlog" icon="ui-icon-carat-1-nw" style="font-size:14px" 
+							outcome="/projetoSelecionado/index">
 							<!--process="datatableItensProduto"-->
-
-							<f:param name="id" value="#{item.id}" />
+							
+							 <f:param value="#{projeto.id}" name="projetoEscolhido"/>
 
 						</p:button>
 
 						<p:commandButton id="buttonEditar" value="Editar"
 							process="datatableProjeto"
 							update=":formProjeto:painelProjetoDialog" icon="ui-icon-pencil"
-							action="#{projetoController.manterProjeto()}" style="font-size:14px"
+							action="#{projetoController.manterProjeto()}"
+							style="font-size:14px"
 							oncomplete="PF('editeProjetoDialog').show()">
 
 							<f:setPropertyActionListener value="#{projeto}"
@@ -105,7 +99,8 @@
 						<p:commandButton id="buttonDelete" value="Deletar"
 							process="datatableProjeto" update="datatableProjeto"
 							icon="ui-icon-circle-close"
-							action="#{projetoController.remove(projeto)}" style="font-size:14px">
+							action="#{projetoController.remove(projeto)}"
+							style="font-size:14px">
 							<p:confirm header="Confirmação"
 								message="Deseja excluir esse Projeto?" icon="ui-icon-alert" />
 						</p:commandButton>
@@ -140,11 +135,15 @@
 								pattern="dd-MM-yyyy" mask="true" />
 
 							<h:outputLabel value="Duração da Sprint" />
-								<p:inputText maxlength="2" size="2"
-									value="#{projetoController.projetoSelecionado.sprintDuration}" />
-								<h:outputLabel value="Terminado" />
-								<p:selectBooleanCheckbox
-									value="#{projetoController.projetoSelecionado.isCompleted}" />
+							<p:inputText maxlength="2" size="2"
+								value="#{projetoController.projetoSelecionado.sprintDuration}" />
+								
+							<!-- 
+							<h:outputLabel value="Terminado" />
+							
+							<p:selectBooleanCheckbox
+								value="#{projetoController.projetoSelecionado.isCompleted}" />
+							-->
 						</h:panelGrid>
 
 						<br />
@@ -178,13 +177,13 @@
 						<h:outputLabel value="Duração da Sprint " />
 						<p:inputText maxlength="2" size="2"
 							value="#{projetoController.projeto.sprintDuration}" />
-							
-							
-						
+
+
+						<!-- 
 						<h:outputLabel value="Terminado" />
 						<p:selectBooleanCheckbox
 							value="#{projetoController.projeto.isCompleted}" />
-
+						-->
 					</h:panelGrid>
 
 					<br />
