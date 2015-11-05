@@ -32,8 +32,8 @@ public class Sprint implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column
-	private List<Atividade> sprintBacklog;
+//	@Column
+//	private List<Atividade> sprintBacklog;
 
 	@Temporal(TemporalType.DATE)
 	private Date dataInicio;
@@ -57,13 +57,13 @@ public class Sprint implements Serializable{
 		this.id = id;
 	}
 
-	public List<Atividade> getSprintBacklog() {
-		return sprintBacklog;
-	}
-
-	public void setSprintBacklog(List<Atividade> sprintBacklog) {
-		this.sprintBacklog = sprintBacklog;
-	}
+//	public List<Atividade> getSprintBacklog() {
+//		return sprintBacklog;
+//	}
+//
+//	public void setSprintBacklog(List<Atividade> sprintBacklog) {
+//		this.sprintBacklog = sprintBacklog;
+//	}
 
 	public Date getDataInicio() {
 		return dataInicio;
@@ -100,7 +100,7 @@ public class Sprint implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Sprint [sprintBacklog=" + sprintBacklog + ", dataInicio=" + dataInicio + ", dataTermino=" + dataTermino
+		return "Sprint [ dataInicio=" + dataInicio + ", dataTermino=" + dataTermino
 				+ ", descricao=" + descricao + ", projeto=" + projeto + "]";
 	}
 

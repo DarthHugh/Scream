@@ -52,6 +52,9 @@ public class Projeto implements Serializable{
     @OneToMany(mappedBy = "projeto")
     private List<DefinicaoDePronto> definicoesDePronto;
     
+    @OneToMany(mappedBy = "projeto")
+    private List<Sprint> listSprint;
+    
     public Long getId() {
         return id;
     }
@@ -108,6 +111,15 @@ public class Projeto implements Serializable{
     public void setDefinicoesDePronto(List<DefinicaoDePronto> definicoesDePronto) {
         this.definicoesDePronto = definicoesDePronto;
     }
+
+	public List<Sprint> getListSprint() {
+		return listSprint;
+	}
+
+	public void setListSprint(List<Sprint> listSprint) {
+		this.listSprint = listSprint;
+	}
+    
     
     
 //    public List<UsuarioProjeto> getListUsuarioProjeto() {

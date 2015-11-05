@@ -12,7 +12,7 @@ import br.ifpb.monteiro.scream.entities.Atividade;
  * @author Markus Patriota
  *
  */
-public class AtividadeSevice {
+public class AtividadeService {
 
 	@Inject
 	private AtividadeDAO atividadeDAO;

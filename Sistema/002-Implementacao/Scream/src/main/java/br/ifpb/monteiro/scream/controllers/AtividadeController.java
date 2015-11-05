@@ -6,7 +6,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
 import br.ifpb.monteiro.scream.entities.Atividade;
-import br.ifpb.monteiro.scream.services.AtividadeSevice;
+import br.ifpb.monteiro.scream.services.AtividadeService;
 
 /**
  * 
@@ -17,7 +17,7 @@ import br.ifpb.monteiro.scream.services.AtividadeSevice;
 @RequestScoped
 public class AtividadeController {
 
-	private AtividadeSevice atividadeSevice;
+	private AtividadeService atividadeSevice;
 	
 	private Atividade atividade;
 	
@@ -43,11 +43,11 @@ public class AtividadeController {
 	 * 
 	 * Get's and Set's
 	 */
-	public AtividadeSevice getAtividadeSevice() {
+	public AtividadeService getAtividadeSevice() {
 		return atividadeSevice;
 	}
 
-	public void setAtividadeSevice(AtividadeSevice atividadeSevice) {
+	public void setAtividadeSevice(AtividadeService atividadeSevice) {
 		this.atividadeSevice = atividadeSevice;
 	}
 
