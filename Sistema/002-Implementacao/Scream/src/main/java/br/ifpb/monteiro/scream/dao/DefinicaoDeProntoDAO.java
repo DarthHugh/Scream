@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.ifpb.monteiro.scream.entities.DefinicaoDePronto;
 import br.ifpb.monteiro.scream.entities.Projeto;
+import br.ifpb.monteiro.scream.entities.Projeto;
 import br.ifpb.monteiro.scream.entities.enums.DefinicaoDeProntoEnum;
 
 /**
@@ -36,4 +37,13 @@ public class DefinicaoDeProntoDAO extends GenericDAO<DefinicaoDePronto>{
 		return definicao.get(0);
 	}
 
+    public List<DefinicaoDePronto> findByProjeto(Projeto entity){
+    	
+    	List<DefinicaoDePronto> definicaoDeProntos= (List<DefinicaoDePronto>) getEntityManager().find(getEntity(), entity);
+
+		return definicaoDeProntos;
+    	
+    }
+    
+    
 }

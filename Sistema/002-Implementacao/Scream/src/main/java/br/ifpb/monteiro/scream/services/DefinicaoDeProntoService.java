@@ -84,5 +84,12 @@ public class DefinicaoDeProntoService {
     public List<DefinicaoDePronto> findAll() {
         return definicaoDeProntoDAO.findAll();
     }
+
+	public void createDefinicaoPronto(Projeto entity) {
+		createDefinicaoProntoPB(entity);
+		createDefinicaoProntoRelease(entity);
+		createDefinicaoProntoSprint(entity);
+		
+	}
     
 }
