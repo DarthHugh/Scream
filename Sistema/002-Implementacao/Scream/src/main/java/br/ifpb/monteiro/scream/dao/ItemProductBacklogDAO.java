@@ -51,5 +51,12 @@ public class ItemProductBacklogDAO extends GenericDAO<ItemProductBacklog>{
 		Query queryProduto = getEntityManager().createNativeQuery("DELETE FROM item_product_backlog WHERE id = " + entity.getId());
 		queryProduto.executeUpdate();
 	}
+	
+	public List<ItemProductBacklog> findItemPBAll(){
+		
+		List<ItemProductBacklog> lisItemProductBacklogs= query("select item from ItemProductBacklog item");
+		
+		return lisItemProductBacklogs;
+	}
 
 }

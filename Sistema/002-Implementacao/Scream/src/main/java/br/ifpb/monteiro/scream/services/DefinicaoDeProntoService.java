@@ -21,6 +21,7 @@ import javax.inject.Inject;
  */
 public class DefinicaoDeProntoService {
 
+
 	@Inject
 	private DefinicaoDeProntoDAO definicaoDeProntoDAO;
 
@@ -91,5 +92,9 @@ public class DefinicaoDeProntoService {
 		createDefinicaoProntoRelease(projeto);
 		createDefinicaoProntoSprint(projeto);
 
+	}
+
+	public DefinicaoDePronto findByProject(DefinicaoDeProntoEnum productbacklog, Projeto projetoEscolhido) {
+		return definicaoDeProntoDAO.findById(productbacklog, projetoEscolhido);
 	}
 }

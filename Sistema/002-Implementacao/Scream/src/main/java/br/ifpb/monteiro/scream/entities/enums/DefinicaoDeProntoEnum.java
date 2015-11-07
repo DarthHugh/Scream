@@ -11,23 +11,8 @@ package br.ifpb.monteiro.scream.entities.enums;
  */
 public enum DefinicaoDeProntoEnum {
     
-    SPRINT(1),
-    PRODUCTBACKLOG(2),
-    RELEASE(3);
-    
-    private int tipoDefinicao;
-    
-    DefinicaoDeProntoEnum(int tipoDefinicao){
-        this.tipoDefinicao = tipoDefinicao;
-    }
-
-    public int getTipoDefinicao() {
-        return tipoDefinicao;
-    }
-
-    public void setTipoDefinicao(int tipoDefinicao) {
-        this.tipoDefinicao = tipoDefinicao;
-    }
-    
-
+    SPRINT,
+    PRODUCTBACKLOG,
+    RELEASE
+  
 }

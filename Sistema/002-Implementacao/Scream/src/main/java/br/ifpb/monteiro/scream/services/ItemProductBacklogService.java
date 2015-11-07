@@ -76,4 +76,8 @@ public class ItemProductBacklogService {
 		
 	}
     
+    public List<ItemProductBacklog> findItemPBAll(){
+    	return itemProductBacklogDAO.findItemPBAll();
+    }
+    
 }
