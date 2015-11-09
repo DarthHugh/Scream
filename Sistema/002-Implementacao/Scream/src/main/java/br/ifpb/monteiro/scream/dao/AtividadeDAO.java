@@ -7,8 +7,8 @@ public class AtividadeDAO extends GenericDAO<Atividade> implements AtividadeDaoI
 	
 	private static final long serialVersionUID = 1L;
 
-	public AtividadeDAO(Class<Atividade> entityClass) {
-		super(entityClass);
+	public AtividadeDAO() {
+		super(Atividade.class);
 	}
 	
 }
