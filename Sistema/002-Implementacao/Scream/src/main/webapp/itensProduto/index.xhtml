@@ -203,9 +203,9 @@
 							style="margin-top: 20px;" rows="10" 
 							emptyMessage="Nenhum item encontrado" paginator="true"
 							paginatorPosition="bottom" editable="true"
-							paginatorTemplate="{CurrentPageReport} {FirstPageLink}{PreviousPageLink}  {PageLinks}
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks}
                              {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-							rowsPerPageTemplate="10,20, 50,100,200" rowKey="item.id">
+							rowKey="item.id">
 
 							<p:ajax event="rowEdit"
 								listener="#{testeAceitacaoController.onRowEdit}"
@@ -256,12 +256,13 @@
 								</p:cellEditor>
 							</p:column>
 
-							<p:column style="width:10%">
-								<p:rowEditor />
+							<p:column style="width:10%; white-space: nowrap;">
+							<p:rowEditor style="display: inline-block; vertical-align: middle;" />
 
-								<p:commandButton update=":formItensDialog" icon="ui-icon-trash"
-									action="#{testeAceitacaoController.remove(teste)}"
-									oncomplete="PF('itemDialogHue').show()" style="" />
+							<p:commandButton update=":formItensDialog" icon="ui-icon-trash"
+								action="#{testeAceitacaoController.remove(teste)}"
+								oncomplete="PF('itemDialogHue').show()"
+								style="font-size: 5px; vertical-align: middle; margin-left: 3px" />
 							</p:column>
 						</p:dataTable>
 					</h:panelGrid>
