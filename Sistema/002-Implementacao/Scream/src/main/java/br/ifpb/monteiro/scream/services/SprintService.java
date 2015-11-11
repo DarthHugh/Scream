@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import br.ifpb.monteiro.scream.dao.SprintDAO;
 import br.ifpb.monteiro.scream.entities.Sprint;
+import br.ifpb.monteiro.scream.util.jpa.Transactional;
 
 /**
  * 
@@ -21,11 +22,13 @@ public class SprintService {
 	public void remove(Sprint entity){
 		sprintDAO.delete(entity);
 	}
-
+	
+	@Transactional
 	public void create(Sprint entity){
 		sprintDAO.create(entity);
 	}
 
+	@Transactional
 	public void edit(Sprint entity){
 		sprintDAO.update(entity);
 	}

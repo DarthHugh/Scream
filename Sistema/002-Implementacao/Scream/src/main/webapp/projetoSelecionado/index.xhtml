@@ -67,27 +67,67 @@
 						<div>
 							<p:commandButton value="Sprint Planning"
 								icon="ui-icon-circle-plus"
-								oncomplete="PF('novoItemDialog').show()" disabled="true"
-								style="position: absolute; margin-top:45%; margin-left:-48%; padding:10px" />
+								disabled="false"
+								style="position: absolute; margin-top:45%; margin-left:-48%; padding:10px" 
+								oncomplete="PF('sprintDialog').show()"/>
 
-							<p:inputTextarea maxlength="500" cols="50" rows="10"
+							<p:inputTextarea maxlength="255" cols="50" rows="10" autoResize="false" 
 								counter="counterTemplate" id="definicaoPronto"
 								counterTemplate="{0} Caracteres restantes."
-								style="position: absolute; margin-top:25%; margin-left:6%; padding:10px "
-								placeholder="Defina pronto"
+								style="position: absolute; margin-top:25%; margin-left:6%; padding:10px;"
+								placeholder="Defina pronto" 
 								value="#{projetoController.definicaoPronto.descricao}"
-								disabled="false"/>
+								disabled="false" />
 
 							<h:outputText id="counterTemplate"
 								style=" position: absolute; margin-top:46%; margin-left:30%; padding:10px" />
 
 							<h:commandButton icon="ui-icon-disk" title="Icon Only"
 								value="Salvar" disabled="false"
-								action="#{projetoController.updateDefinicao}"
+								actionListener="#{projetoController.updateDefinicao}"
 								style="position: absolute; margin-top:46%; margin-left:6%; padding:10px;"
-								oncomplete=""/>
+								oncomplete="" />
 
 						</div>
+
+						<p:dialog id="sprintDialog" header="Nova Sprint"
+							widgetVar="sprintDialog" resizable="false" draggable="false"
+							showEffect="fade" hideEffect="fade" modal="false"
+							style="font-size: 12px" height="50%" width="50%">
+							<h:panelGrid columns="2" style="font-size: 12px">
+
+								<h:outputText value="Objetivos: " />
+								<p:inputTextarea maxlength="255" size="40"
+									value="#{sprintController.sprint.descricao}"
+									placeholder="Objetivos da Sprint" />
+
+
+								<p:outputLabel for="dataInicioEdite" value="Data de Inicio" />
+								<p:calendar id="dataInicioEdite"
+									value="#{sprintController.sprint.dataInicio}"
+									pattern="dd-MM-yyyy" mask="true" />
+
+
+								<h:outputText value="Duração: " />
+								<p:inputText maxlength="4" size="40"
+									value="#{sprintController.sprint.duracao}"
+									placeholder="Descrição do teste de aceitação" />
+
+
+								<p:commandButton value="Finalizar" update="@form"
+									icon="ui-icon-circle-plus"
+									action="#{sprintController.create}"
+									oncomplete="PF('sprintDialog').hide()" />
+
+								<p:commandButton value="Nova Sprint" update="@form"
+									icon="ui-icon-circle-plus"
+									action="#{sprintController.create}"
+									oncomplete="PF('sprintDialog').show()" />
+
+							</h:panelGrid>
+
+						</p:dialog>
+
 					</p:layoutUnit>
 
 				</p:layout>

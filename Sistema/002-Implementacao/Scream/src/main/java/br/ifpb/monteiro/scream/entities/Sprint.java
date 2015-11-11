@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,12 +44,21 @@ public class Sprint implements Serializable{
 
 	@Column(nullable = false, name = "descricao")
 	private String descricao;
+	
+	@Column(nullable = false, name = "duracao")
+	private int duracao;
+
 
 	@ManyToOne(cascade=CascadeType.ALL)
 	@CascadeOnDelete
 	@JoinColumn(name="projeto_id")
 	private Projeto projeto;
-
+	
+	//Uma Sprint possui vários itens de product backlog
+	@OneToMany(mappedBy="sprint", cascade=CascadeType.ALL)
+    private List<ItemProductBacklog> listProductbacklog;
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -57,13 +67,6 @@ public class Sprint implements Serializable{
 		this.id = id;
 	}
 
-//	public List<Atividade> getSprintBacklog() {
-//		return sprintBacklog;
-//	}
-//
-//	public void setSprintBacklog(List<Atividade> sprintBacklog) {
-//		this.sprintBacklog = sprintBacklog;
-//	}
 
 	public Date getDataInicio() {
 		return dataInicio;
@@ -97,11 +100,26 @@ public class Sprint implements Serializable{
 		this.projeto = projeto;
 	}
 
+	public List<ItemProductBacklog> getListProductbacklog() {
+		return listProductbacklog;
+	}
 
+	public void setListProductbacklog(List<ItemProductBacklog> listProductbacklog) {
+		this.listProductbacklog = listProductbacklog;
+	}
+
+	public int getDuracao() {
+		return duracao;
+	}
+	
+	public void setDuracao(int duracao) {
+		this.duracao = duracao;
+	}
+	
 	@Override
 	public String toString() {
 		return "Sprint [ dataInicio=" + dataInicio + ", dataTermino=" + dataTermino
-				+ ", descricao=" + descricao + ", projeto=" + projeto + "]";
+				+ ", descricao=" + descricao + ", projeto=" + projeto + ", id="+ id +" ]";
 	}
 
 }

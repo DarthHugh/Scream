@@ -32,7 +32,6 @@ public class TesteAceitacao implements Serializable{
     @Column(nullable = false, length = 255, name = "estado_teste")
     private Boolean estadoTeste;
 
-//  
 //    @OneToMany(mappedBy = "unimplemented_yet")
 //    private List<Unimplemented_yet> unimplemented_yet;
     

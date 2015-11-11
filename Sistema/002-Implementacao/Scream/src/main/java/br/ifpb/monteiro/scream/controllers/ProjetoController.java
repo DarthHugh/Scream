@@ -72,6 +72,7 @@ public class ProjetoController {
 	public void create() {
 
 		registrarData();
+		projeto.setIsCompleted(false);
 		projetoService.create(projeto);
 		JsfUtil.addSuccessMessage("Projeto adicionado com sucesso!");
 		redirect();

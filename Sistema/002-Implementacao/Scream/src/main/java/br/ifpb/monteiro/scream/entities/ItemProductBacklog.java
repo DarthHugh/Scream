@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
+
 /**
  *
  * @author Mauricio
@@ -60,6 +62,12 @@ public class ItemProductBacklog  implements Serializable{
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="produto_id")
     private Produto produto;
+    
+	@ManyToOne(cascade=CascadeType.ALL)
+	@CascadeOnDelete
+	@JoinColumn(name="sprint_id")
+	private Sprint sprint;
+    
     
     //Um item de PB possui vários critérios de aceitação
     @OneToMany(mappedBy="itemProductBacklog", cascade=CascadeType.ALL)
@@ -143,6 +151,16 @@ public class ItemProductBacklog  implements Serializable{
     public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
+
+	public Sprint getSprint() {
+		return sprint;
+	}
+
+	public void setSprint(Sprint sprint) {
+		this.sprint = sprint;
+	}
+    
+    
 //
 //	public List<CriterioAceitacao> getListCriterioAceitacao() {
 //		return listCriterioAceitacao;
