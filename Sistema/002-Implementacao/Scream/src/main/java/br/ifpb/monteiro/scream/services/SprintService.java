@@ -5,7 +5,10 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.ifpb.monteiro.scream.dao.SprintDAO;
+import br.ifpb.monteiro.scream.entities.DefinicaoDePronto;
+import br.ifpb.monteiro.scream.entities.Projeto;
 import br.ifpb.monteiro.scream.entities.Sprint;
+import br.ifpb.monteiro.scream.entities.enums.DefinicaoDeProntoEnum;
 import br.ifpb.monteiro.scream.util.jpa.Transactional;
 
 /**
@@ -35,6 +38,10 @@ public class SprintService {
 
 	public Sprint find(Long id){
 		return sprintDAO.findById(id);
+	}
+	
+	public List<Sprint> findByProject(Projeto projetoEscolhido) {
+		return sprintDAO.findByProjeto(projetoEscolhido);
 	}
 
 	public List<Sprint> findAll(){

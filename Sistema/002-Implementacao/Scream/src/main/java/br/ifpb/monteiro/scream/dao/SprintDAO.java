@@ -1,5 +1,8 @@
 package br.ifpb.monteiro.scream.dao;
 
+import java.util.List;
+
+import br.ifpb.monteiro.scream.entities.Projeto;
 import br.ifpb.monteiro.scream.entities.Sprint;
 
 /**
@@ -13,6 +16,13 @@ public class SprintDAO extends GenericDAO<Sprint>{
 	public SprintDAO() {
 		super(Sprint.class);
 	}
+	
+	public List<Sprint> findByProjeto(Projeto entity){
+		
+		List<Sprint> sprints = query("Select sprint From Sprint sprint where sprint.projeto.id=?1 order by sprint.id", entity.getId());
 
+//		List<Sprint> sprints= (List<Sprint>) getEntityManager().find(getEntity(), entity);
+		return sprints;
+	}
 
 }

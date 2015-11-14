@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,10 +16,12 @@ import javax.inject.Named;
 import br.ifpb.monteiro.scream.entities.DefinicaoDePronto;
 import br.ifpb.monteiro.scream.entities.ItemProductBacklog;
 import br.ifpb.monteiro.scream.entities.Projeto;
+import br.ifpb.monteiro.scream.entities.Sprint;
 import br.ifpb.monteiro.scream.entities.enums.DefinicaoDeProntoEnum;
 import br.ifpb.monteiro.scream.services.DefinicaoDeProntoService;
 import br.ifpb.monteiro.scream.services.ItemProductBacklogService;
 import br.ifpb.monteiro.scream.services.ProjetoService;
+import br.ifpb.monteiro.scream.services.SprintService;
 import br.ifpb.monteiro.scream.util.jsf.JsfUtil;
 
 /**
@@ -38,15 +41,21 @@ public class ProjetoController {
 	@Inject
 	private DefinicaoDeProntoService dPS;
 
+	@Inject
+	private SprintService sprintService;
+
 	private Projeto projeto;
-
 	private Projeto projetoSelecionado;
-
 	private Projeto projetoEscolhido;
 
 	private List<Projeto> listProjeto;
 	private List<ItemProductBacklog> itemProductBacklogs;
+	private List<Sprint> listSprint;
+	
+
 	private DefinicaoDePronto definicaoPronto;
+	private Sprint sprint;
+	private Sprint sprintSelected;
 
 
 	FacesContext contexto = FacesContext.getCurrentInstance();
@@ -59,15 +68,21 @@ public class ProjetoController {
 
 		projetoSelecionado= manterProjeto();
 		listProjeto = projetoService.findAll();
+		
 
 		if(definicaoPronto==null){
 			setDefinicaoPronto(new DefinicaoDePronto());
+		}
+		if(sprint==null){
+			sprint = new Sprint();
 		}
 
 		//		definicaoPronto = manterDefinicao();
 		findAllItemPB();
 		//		definicaoPronto = findDefinicaoPronto(DefinicaoDeProntoEnum.PRODUCTBACKLOG, projetoSelecionado.getId());
 	}
+
+	//Métodos de Projeto
 
 	public void create() {
 
@@ -90,6 +105,13 @@ public class ProjetoController {
 		}
 	}
 
+	public void remove(Projeto projetoSelec){
+		projetoService.remove(projetoSelec);
+		redirect();
+
+	}
+
+	//Métodos de Definição de Pronto 
 
 	public void updateDefinicao(){
 
@@ -102,11 +124,51 @@ public class ProjetoController {
 
 	}
 
-	public void remove(Projeto projetoSelec){
-		projetoService.remove(projetoSelec);
-		redirect();
+	public void prepararDefinicao(){
+
+		projetoEscolhido = projetoService.find(projetoEscolhido.getId());
+		proj = projetoEscolhido;
+		definicaoPronto = findDPProductBacklog();
+		findSprints();
 
 	}
+
+	public Boolean validarDefinicao(DefinicaoDePronto dp){
+
+		if(dp.getDescricao() == null || dp.getDescricao().equals(""))
+			return false;
+
+		return true;
+	}
+
+
+	//Métodos de Sprint
+
+	public void createSprint(){
+
+		sprintService.create(sprint);
+		sprint.setProjeto(proj);
+		sprintService.edit(sprint);
+		setSprint(new Sprint());
+	}
+	
+	public List<Sprint> getListSprint(){
+		
+		return this.listSprint;
+    }
+	
+	public List<Sprint> findSprints(){
+
+		List<Sprint> sprints = sprintService.findByProject(proj);
+		setListSprint(sprints);
+		return sprints;
+	}
+	
+	public void setListSprint(List<Sprint> listSprint) {
+		this.listSprint = listSprint;
+	}
+
+	//Métodos de Classe
 
 	private void registrarData() {
 		Calendar calendar = GregorianCalendar.getInstance();
@@ -125,11 +187,10 @@ public class ProjetoController {
 		}
 	}
 
-
-
 	public void setProjetoSelecionado(Projeto projetoSelecionado) {
 		this.projetoSelecionado = projetoSelecionado;
 	}
+
 	public Projeto manterProjeto() {
 		Projeto aux = (Projeto) contexto.getExternalContext().getSessionMap().put("projeto", projetoSelecionado);
 		if(aux==null)
@@ -138,78 +199,89 @@ public class ProjetoController {
 			return aux;
 	}
 
-	public void prepararDefinicao(){
-
-		projetoEscolhido = projetoService.find(projetoEscolhido.getId());
-		definicaoPronto = findDPProductBacklog();
-
-	}
-
 	public List<ItemProductBacklog> findAllItemPB(){
 		itemProductBacklogs = itemProductBacklogService.findItemPBAll();
 		return itemProductBacklogs;
 	}
 
+	public void addMessage(String summary) {
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
+
+	private static Projeto proj;
+
 	public DefinicaoDePronto findDPProductBacklog(){
 
-		DefinicaoDePronto dP = dPS.findByProject(DefinicaoDeProntoEnum.PRODUCTBACKLOG, projetoEscolhido);
+		DefinicaoDePronto dP = null;
+
+		dP = dPS.findByProject(DefinicaoDeProntoEnum.PRODUCTBACKLOG, proj);
 
 		return dP;
 
 	}
 
-	public Boolean validarDefinicao(DefinicaoDePronto dp){
+	public ProjetoService getProjetoService() {
+		return projetoService;
+	}
 
-		if(dp.getDescricao() == null || dp.getDescricao().equals(""))
-			return false;
+	public void setProjetoService(ProjetoService projetoService) {
+		this.projetoService = projetoService;
+	}
 
-		return true;
+	public Projeto getProjeto() {
+		return projeto;
+	}
+
+	public void setProjeto(Projeto projeto) {
+		this.projeto = projeto;
+	}
+
+	public List<Projeto> getListProjeto() {
+		return listProjeto;
+	}
+
+	public void setListProjeto(List<Projeto> listProjeto) {
+		this.listProjeto = listProjeto;
+	}
+
+	public Projeto getProjetoSelecionado() {
+		return projetoSelecionado;
 	}
 
 
-public ProjetoService getProjetoService() {
-	return projetoService;
-}
+	public Projeto getProjetoEscolhido() {
+		return projetoEscolhido;
+	}
 
-public void setProjetoService(ProjetoService projetoService) {
-	this.projetoService = projetoService;
-}
+	public void setProjetoEscolhido(Projeto projetoEscolhido) {
+		this.projetoEscolhido = projetoEscolhido;
+	}
 
-public Projeto getProjeto() {
-	return projeto;
-}
+	public DefinicaoDePronto getDefinicaoPronto() {
+		return definicaoPronto;
+	}
 
-public void setProjeto(Projeto projeto) {
-	this.projeto = projeto;
-}
+	public void setDefinicaoPronto(DefinicaoDePronto definicaoPronto) {
+		this.definicaoPronto = definicaoPronto;
+	}
 
-public List<Projeto> getListProjeto() {
-	return listProjeto;
-}
+	public Sprint getSprint() {
+		return sprint;
+	}
 
-public void setListProjeto(List<Projeto> listProjeto) {
-	this.listProjeto = listProjeto;
-}
+	public void setSprint(Sprint sprint) {
+		this.sprint = sprint;
+	}
 
-public Projeto getProjetoSelecionado() {
-	return projetoSelecionado;
-}
+	public Sprint getSprintSelected() {
+		return sprintSelected;
+	}
 
-
-public Projeto getProjetoEscolhido() {
-	return projetoEscolhido;
-}
-
-public void setProjetoEscolhido(Projeto projetoEscolhido) {
-	this.projetoEscolhido = projetoEscolhido;
-}
-
-public DefinicaoDePronto getDefinicaoPronto() {
-	return definicaoPronto;
-}
-
-public void setDefinicaoPronto(DefinicaoDePronto definicaoPronto) {
-	this.definicaoPronto = definicaoPronto;
-}
+	public void setSprintSelected(Sprint sprintSelected) {
+		this.sprintSelected = sprintSelected;
+	}
+	
+	
 
 }

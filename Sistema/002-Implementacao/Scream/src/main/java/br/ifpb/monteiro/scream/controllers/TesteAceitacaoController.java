@@ -19,7 +19,6 @@ import org.primefaces.event.RowEditEvent;
 
 import br.ifpb.monteiro.scream.entities.ItemProductBacklog;
 import br.ifpb.monteiro.scream.entities.TesteAceitacao;
-import br.ifpb.monteiro.scream.services.ItemProductBacklogService;
 import br.ifpb.monteiro.scream.services.TesteAceitacaoService;
 /**
  *
@@ -33,8 +32,6 @@ public class TesteAceitacaoController {
 	private TesteAceitacaoService criterioAceitacaoService;
 
 	private TesteAceitacao criterioAceitacao;
-
-	private TesteAceitacao selectCriterio;
 
 	private List<TesteAceitacao> listAceitacao;
 
@@ -134,18 +131,12 @@ public class TesteAceitacaoController {
 	}
 
 
-
 	public List<TesteAceitacao> findAll(){
 		List<TesteAceitacao> criterioAceitacao = criterioAceitacaoService.findAll();
 		return criterioAceitacao;
 	}
 
-
-
 	//Get's and Set's
-
-
-
 
 	public TesteAceitacao getCriterioAceitacao() {
 		return criterioAceitacao;
@@ -186,7 +177,5 @@ public class TesteAceitacaoController {
 			TesteAceitacaoService criterioAceitacaoService) {
 		this.criterioAceitacaoService = criterioAceitacaoService;
 	}
-
-
 
 }
