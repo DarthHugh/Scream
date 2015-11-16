@@ -7,6 +7,7 @@ package br.ifpb.monteiro.scream.entities.enums;
  */
 
 public enum StatusKanbanEnum {
+	SNOOZE(0),
 	TODO(1),
 	DOING(2),
 	DONE(3);

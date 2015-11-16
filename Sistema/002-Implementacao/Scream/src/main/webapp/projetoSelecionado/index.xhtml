@@ -67,6 +67,7 @@
 								value="#{projetoController.sprintSelected}" required="false"
 								style="position: relative; margin-left:30%" maxlength="8" >
 								<f:selectItem itemLabel="Selecione uma Sprint para navegar" />
+								
 								<f:selectItems value="#{projetoController.findSprints()}"
 									var="sprints" itemValue="#{sprints.descricao}"
 									itemLabel="#{sprints.descricao}" />

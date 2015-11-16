@@ -2,8 +2,10 @@ package br.ifpb.monteiro.scream.entities;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.management.relation.Role;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.ifpb.monteiro.scream.entities.enums.Roles;
@@ -49,6 +52,9 @@ public class UsuarioProjeto implements Serializable {
     
     @Column(nullable = true, name = "roles")
     private Roles roles;
+    
+    @OneToMany(mappedBy="usuarioProjeto", cascade=CascadeType.ALL)
+    private List<Atividade> listAtividade;
     
     public Long getId() {
         return id;

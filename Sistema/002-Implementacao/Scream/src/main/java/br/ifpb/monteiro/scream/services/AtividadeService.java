@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import br.ifpb.monteiro.scream.dao.AtividadeDAO;
 import br.ifpb.monteiro.scream.entities.Atividade;
+import br.ifpb.monteiro.scream.util.jpa.Transactional;
 
 /**
  * 
@@ -21,10 +22,12 @@ public class AtividadeService {
 		atividadeDAO.delete(entity);
 	}
 
+	@Transactional
 	public void create(Atividade entity){
 		atividadeDAO.create(entity);
 	}
 
+	@Transactional
 	public void edit(Atividade entity){
 		atividadeDAO.update(entity);
 	}

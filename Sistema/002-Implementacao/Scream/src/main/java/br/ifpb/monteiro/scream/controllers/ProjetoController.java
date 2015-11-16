@@ -281,7 +281,4 @@ public class ProjetoController {
 	public void setSprintSelected(Sprint sprintSelected) {
 		this.sprintSelected = sprintSelected;
 	}
-	
-	
-
 }

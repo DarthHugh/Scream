@@ -33,6 +33,14 @@ public class Atividade implements Serializable{
 
 	@Column(nullable = false, name = "descricao")
 	private String descricao;
+	
+	@Column(nullable = true, name = "horas")
+	private String horas;
+	
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="usuario_projeto_id")
+	private UsuarioProjeto usuarioProjeto;
 
 	@Column(nullable = false, name = "tipo_atividade")
 	private String tipoAtividade;
@@ -42,6 +50,8 @@ public class Atividade implements Serializable{
 
 	@Column(nullable = false, name = "status_kanban")
 	private StatusKanbanEnum statusKanbanEnum;
+	
+	
 
 	@ManyToOne(cascade=CascadeType.ALL)
 	@CascadeOnDelete
@@ -75,6 +85,22 @@ public class Atividade implements Serializable{
 		this.tipoAtividade = tipoAtividade;
 	}
 
+	public String getHoras() {
+		return horas;
+	}
+
+	public void setHoras(String horas) {
+		this.horas = horas;
+	}
+
+	public UsuarioProjeto getUsuarioProjeto() {
+		return usuarioProjeto;
+	}
+
+	public void setUsuarioProjeto(UsuarioProjeto usuarioProjeto) {
+		this.usuarioProjeto = usuarioProjeto;
+	}
+
 	public double getValorGasto() {
 		return valorGasto;
 	}
@@ -98,5 +124,7 @@ public class Atividade implements Serializable{
 	public void setItemProductBacklog(ItemProductBacklog itemProductBacklog) {
 		this.itemProductBacklog = itemProductBacklog;
 	}
+	
+	
 	
 }
