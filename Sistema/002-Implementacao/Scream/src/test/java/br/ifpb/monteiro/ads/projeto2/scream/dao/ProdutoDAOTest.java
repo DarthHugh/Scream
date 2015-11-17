@@ -55,63 +55,68 @@ public class ProdutoDAOTest {
         assertEquals(p.getNome(), produto.getNome());
         
     }
+    /*
+     * Método não pode ser testa por enquando devido ao método delete do DAO 
+     * que usa a função sql 'USING' para realizar a exclução do Produto, sendo 
+     * que essa função não tem suporte no HSQLDB. 
+     * */
     
-//    @Test
-//    public void testDelete() {
-//        
-//        criaProduto("OutroProduto");
-//        Boolean valid = true;
-//        
-//        String nome = "OutroProduto";
-//        
-//        List<Produto> produtos = produtoDAO.query(
-//                "select produto from Produto produto "
-//                + "where produto.nome = ?1", nome);
-//        
-//        produtoDAO.getEntityManager().getTransaction().begin();
-//        produtoDAO.delete(produtos.get(0));
-//        produtoDAO.getEntityManager().getTransaction().commit();
-//        
-//        List<Produto> produtosResult = produtoDAO.query(
-//                "select produto from Produto produto "
-//                + "where produto.nome = ?1", nome);
-//        
-//        if (produtosResult.size() < 1) {
-//            valid = false;
-//        }
-//        
-//        assertEquals(false, valid);
-//        
-//    }
-//    
-//    
-//    @Test
-//    public void testUpdate() {
-//        
-//        criaProduto("AlgumOutroProduto");
-//        
-//        String nome = "AlgumOutroProduto";
-//        
-//        List<Produto> produtos = produtoDAO.query(
-//                "select produto from Produto produto "
-//                + "where produto.nome = ?1", nome);
-//        
-//        Produto p = produtos.get(0);
-//        p.setNome("NaoOutroProduto");
-//        
-//        produtoDAO.getEntityManager().getTransaction().begin();
-//        produtoDAO.update(p);
-//        produtoDAO.getEntityManager().getTransaction().commit();
-//        
-//        String nomeResult = "NaoOutroProduto";
-//        
-//        List<Produto> produtosResult = produtoDAO.query(
-//                "select produto from Produto produto "
-//                + "where produto.nome = ?1", nomeResult);
-//        
-//        assertEquals("NaoOutroProduto", produtosResult.get(0).getNome());
-//        
-//    }
+    //@Test
+    public void testDelete() {
+        
+        criaProduto("OutroProduto");
+        Boolean valid = true;
+        
+        String nome = "OutroProduto";
+        
+        List<Produto> produtos = produtoDAO.query(
+                "select produto from Produto produto "
+                + "where produto.nome = ?1", nome);
+        
+        produtoDAO.getEntityManager().getTransaction().begin();
+        produtoDAO.delete(produtos.get(0));
+        produtoDAO.getEntityManager().getTransaction().commit();
+        
+        List<Produto> produtosResult = produtoDAO.query(
+                "select produto from Produto produto "
+                + "where produto.nome = ?1", nome);
+        
+        if (produtosResult.size() < 1) {
+            valid = false;
+        }
+        
+        assertEquals(false, valid);
+        
+    }
+    
+    
+    @Test
+    public void testUpdate() {
+        
+        criaProduto("AlgumOutroProduto");
+        
+        String nome = "AlgumOutroProduto";
+        
+        List<Produto> produtos = produtoDAO.query(
+                "select produto from Produto produto "
+                + "where produto.nome = ?1", nome);
+        
+        Produto p = produtos.get(0);
+        p.setNome("NaoOutroProduto");
+        
+        produtoDAO.getEntityManager().getTransaction().begin();
+        produtoDAO.update(p);
+        produtoDAO.getEntityManager().getTransaction().commit();
+        
+        String nomeResult = "NaoOutroProduto";
+        
+        List<Produto> produtosResult = produtoDAO.query(
+                "select produto from Produto produto "
+                + "where produto.nome = ?1", nomeResult);
+        
+        assertEquals("NaoOutroProduto", produtosResult.get(0).getNome());
+        
+    }
     
     @Test
     public void testFindAll() {
