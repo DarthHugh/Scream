@@ -1,10 +1,15 @@
 package br.ifpb.monteiro.scream.controllers;
 
 import java.io.IOException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -32,20 +37,20 @@ public class AtividadeController {
 
 	@Inject
 	private AtividadeService atividadeSevice;
-	
+
 	@Inject
 	private SprintService sprintService;
-	
+
 	private Sprint sprintSelecionado;
 
 	private Atividade atividade;
-	
+
 	private Atividade atividadeSelecionada;
 
 	private List<Atividade> listatividade;	
 
 	private DashboardModel model;
-	
+
 	FacesContext contexto = FacesContext.getCurrentInstance();
 
 	@PostConstruct
@@ -91,23 +96,25 @@ public class AtividadeController {
 			JsfUtil.addErrorMessage("Aconteceu algo inesperado. Tente recarregar a página.");
 		}
 	}
-	
+
 	public Atividade manterAtividade() {
 		Atividade atv = (Atividade) contexto.getExternalContext().getSessionMap().put("atividade", atividadeSelecionada);
-		
+
 		if(atv==null)
 			return new Atividade();
 		else
 			return atv;
 	}
-	
+
 	public void prepararAtividade(){
-		
-		sprintSelecionado = sprintService.find(sprintSelecionado.getId());
-		sprintSelecionada = sprintSelecionado; 
+
+		if(sprintSelecionado.getId()!=null){
+			sprintSelecionado = sprintService.find(sprintSelecionado.getId());
+			sprintSelecionada = sprintSelecionado; 
+		}else{
+			sprintSelecionado = sprintSelecionada;
+		}
 	}
-	
-	
 
 	public void prepararTela(){
 		model = new DefaultDashboardModel();
@@ -129,6 +136,29 @@ public class AtividadeController {
 		model.addColumn(column3);
 		model.addColumn(column4);
 	}
+	
+	public void startarSprint(){
+		System.out.println("STARTOU");
+		sprintSelecionada.setDataInicio(registrarData());
+		sprintService.edit(sprintSelecionada);
+		addMessage("A Sprint foi iniciada com sucesso");
+	}
+	
+	private Date registrarData() {
+		Calendar calendar = GregorianCalendar.getInstance();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		dateFormat.format(calendar.getTime());
+		calendar = dateFormat.getCalendar();
+		Date d = calendar.getTime();
+		return d;
+	}
+	
+	public void addMessage(String summary) {
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
+	
+	
 	/**
 	 * 
 	 * Get's and Set's
@@ -148,7 +178,7 @@ public class AtividadeController {
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
 	}
-	
+
 	public static Sprint sprintSelecionada; 
 
 	public List<Atividade> getListatividade() {
@@ -165,6 +195,10 @@ public class AtividadeController {
 
 	public void setAtividadeSelecionada(Atividade atividadeSelecionada) {
 		this.atividadeSelecionada = atividadeSelecionada;
+	}
+
+	public Sprint getSprintSelecionada() {
+		return sprintSelecionada;
 	}
 
 	public Sprint getSprintSelecionado() {

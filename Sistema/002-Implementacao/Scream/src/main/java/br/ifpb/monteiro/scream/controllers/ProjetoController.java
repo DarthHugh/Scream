@@ -15,11 +15,13 @@ import javax.inject.Named;
 
 import br.ifpb.monteiro.scream.entities.DefinicaoDePronto;
 import br.ifpb.monteiro.scream.entities.ItemProductBacklog;
+import br.ifpb.monteiro.scream.entities.Produto;
 import br.ifpb.monteiro.scream.entities.Projeto;
 import br.ifpb.monteiro.scream.entities.Sprint;
 import br.ifpb.monteiro.scream.entities.enums.DefinicaoDeProntoEnum;
 import br.ifpb.monteiro.scream.services.DefinicaoDeProntoService;
 import br.ifpb.monteiro.scream.services.ItemProductBacklogService;
+import br.ifpb.monteiro.scream.services.ProdutoService;
 import br.ifpb.monteiro.scream.services.ProjetoService;
 import br.ifpb.monteiro.scream.services.SprintService;
 import br.ifpb.monteiro.scream.util.jsf.JsfUtil;
@@ -44,6 +46,9 @@ public class ProjetoController {
 	@Inject
 	private SprintService sprintService;
 
+	@Inject
+	private ProdutoService produtoService;
+	
 	private Projeto projeto;
 	private Projeto projetoSelecionado;
 	private Projeto projetoEscolhido;
@@ -51,6 +56,9 @@ public class ProjetoController {
 	private List<Projeto> listProjeto;
 	private List<ItemProductBacklog> itemProductBacklogs;
 	private List<Sprint> listSprint;
+	
+	private List<Produto> listProduto;
+	private Produto produto;
 
 	private DefinicaoDePronto definicaoPronto;
 	private Sprint sprint;
@@ -68,6 +76,8 @@ public class ProjetoController {
 		setProjetoSelecionado(manterProjeto());
 		
 		setListProjeto(projetoService.findAll());
+		
+		setListProduto(produtoService.findAll());
 		
 
 		if(definicaoPronto==null){
@@ -88,10 +98,15 @@ public class ProjetoController {
 
 		registrarData();
 		projeto.setIsCompleted(false);
+		System.out.println(produto.getDescricao());
+//		projeto.setProduto(produto);
 		projetoService.create(projeto);
 		JsfUtil.addSuccessMessage("Projeto adicionado com sucesso!");
 		redirect();
-
+	}
+	
+	public void syso(){
+		System.out.println("Alguma coisa!!!");
 	}
 
 	public void update(){
@@ -108,7 +123,14 @@ public class ProjetoController {
 	public void remove(Projeto projetoSelec){
 		projetoService.remove(projetoSelec);
 		redirect();
-
+	}
+	
+	public List<Produto> getListProduto(){
+		return listProduto;
+	}
+	
+	public void setListProduto(List<Produto> listProduto) {
+		this.listProduto = listProduto;
 	}
 
 	//Métodos de Definição de Pronto 
@@ -286,4 +308,16 @@ public class ProjetoController {
 	public void setSprintSelected(Sprint sprintSelected) {
 		this.sprintSelected = sprintSelected;
 	}
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
+	
+	
+	
+	
 }

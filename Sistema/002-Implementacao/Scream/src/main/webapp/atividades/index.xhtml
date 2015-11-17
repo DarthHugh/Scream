@@ -24,9 +24,14 @@
 
 			<div
 				style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8">
-				<p:outputLabel value="Atividades da Sprint #{atividadeController.sprintSelecionado.descricao}" />
-				<p:button icon="ui-icon-help"
-					style="font-size: 14px; position: relative; left: 280px" />
+				<p:outputLabel value="Atividades da Sprint #{atividadeController.sprintSelecionada.descricao}" />
+				<p:commandButton icon="ui-icon-gear" style="font-size: 14px; position: relative; left: 280px"
+				 action="#{atividadeController.startarSprint()}" update="msgs">
+				
+						
+				</p:commandButton>
+					
+					
 				<p:commandButton icon="ui-icon-circle-plus"
 					oncomplete="PF('atividadeDialog').show()"
 					style="font-size: 14px; position: relative; left: 280px" />
@@ -114,18 +119,18 @@
 							<p:dataTable id="datatableItensProduto"
 								value="#{atividadeController.findAll()}" var="atividade"
 								widgetVar="tabelaAtividade" paginatorAlwaysVisible="false"
-								style="margin-top: 20px; " rows="10"
+								style="margin-top: 20px; " scrollRows="10"
 								emptyMessage="Nenhum item encontrado" scrollable="true"
 								rowKey="item.id">
 
 								<f:facet name="header">
-									<p:outputLabel value="Sprint XXX"
+									<p:outputLabel value="SNOOZE"
 										style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8" />
 								</f:facet>
 
 								<p:column id="columnDescricao" headerText="Descrição"
 									filterBy="#{atividade.descricao}" filterMatchMode="contains"
-									filterStyle="display:none" style=" width:180px">
+									filterStyle="display:none" style=" width:170px">
 									<h:outputText value="#{atividade.descricao}" />
 								</p:column>
 
@@ -135,7 +140,7 @@
 									<h:outputText value="#{atividade.horas}" />
 								</p:column>
 
-								<p:column id="edit"	style="text-align: center; width:14px">
+								<p:column id="edit"	style="text-align: center; width:30px">
 									<p:commandButton id="buttonEditar"
 										process="datatableItensProduto"
 										update="@form"	icon="ui-icon-pencil"

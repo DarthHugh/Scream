@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -54,6 +57,10 @@ public class Projeto implements Serializable{
     
     @OneToMany(mappedBy = "projeto")
     private List<Sprint> listSprint;
+    
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="produto_id")
+    private Produto produto;
     
     public Long getId() {
         return id;
@@ -118,6 +125,14 @@ public class Projeto implements Serializable{
 
 	public void setListSprint(List<Sprint> listSprint) {
 		this.listSprint = listSprint;
+	}
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
 	}
     
     
