@@ -29,7 +29,7 @@ public class AtividadeService {
 
 	@Transactional
 	public void edit(Atividade entity){
-		atividadeDAO.update(entity);
+		this.atividadeDAO.update(entity);
 	}
 
 	public Atividade find(Long id){

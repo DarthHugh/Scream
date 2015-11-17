@@ -63,16 +63,21 @@
 							<p:outputLabel value="Itens do Produto XXX"
 								style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8; margin-left:10%" />
 
-							<p:selectOneMenu id="selecionaEstado" 
+							<p:selectOneMenu id="sprintSelected" disabled="true"
 								value="#{projetoController.sprintSelected}" required="false"
-								style="position: relative; margin-left:30%" maxlength="8" >
-								<f:selectItem itemLabel="Selecione uma Sprint para navegar" />
-								
-								<f:selectItems value="#{projetoController.findSprints()}"
-									var="sprints" itemValue="#{sprints.descricao}"
-									itemLabel="#{sprints.descricao}" />
+								style="position: relative; margin-left:30%" maxlength="8">
+								<f:selectItem itemLabel="Selecione uma Sprint para navegar"
+									noSelectionOption="true" />
+
+								<f:selectItems value="#{projetoController.listSprint}"
+									var="sprintSelected" itemLabel="#{sprintSelected.descricao}"
+									itemValue="#{sprintSelected}"
+									actionListener="#{projetoController.sprintSelected(sprintSelected)}" />
 
 							</p:selectOneMenu>
+							<p:commandButton icon="ui-icon-carat-1-nw"
+								style="position: relative; font-size:14px; white-space: nowrap;"
+								oncomplete="PF('sprintDialogSelect').show()" />
 						</div>
 
 						<div>
@@ -101,13 +106,51 @@
 
 							</h:commandButton>
 
+							<p:dialog id="sprintDialogSelect" header="Sprints" modal="false"
+								widgetVar="sprintDialogSelect" resizable="false" draggable="false"
+								showEffect="fade" hideEffect="fade" 
+								style="font-size: 12px" height="50%" width="50%">
+
+								<h:panelGrid columns="1" style="font-size: 12px">
+
+									<p:dataTable id="datatableSprintDialog"
+										value="#{projetoController.listSprint}" var="sprint"
+										widgetVar="tabelaSprint" paginatorAlwaysVisible="false"
+										style="margin-top: 20px;" rows="10"
+										emptyMessage="Nenhum item encontrado" paginator="true"
+										paginatorPosition="bottom" editable="true"
+										paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}
+										 {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+										rowKey="item.id">
+
+										<p:column id="sprintDescricao" headerText="Prioridade"
+											filterBy="#{sprint.descricao}" filterMatchMode="contains"
+											filterStyle="display:none" width="70%">
+
+											<h:outputText value="#{sprint.descricao}" />
+
+										</p:column>
+
+										<p:column style="width:10%; white-space: nowrap;">
+
+											<p:button update="@form" icon="ui-icon-carat-1-nw"
+												style="font-size: 5px; vertical-align: middle; margin-left: 3px"
+												outcome="/atividades/index">
+
+												<f:param value="#{sprint.id}" name="sprintSelecionada" />
+
+											</p:button>
+										</p:column>
+									</p:dataTable>
+								</h:panelGrid>
+							</p:dialog>
 
 						</div>
 
 						<p:dialog id="sprintDialog" header="Nova Sprint"
 							widgetVar="sprintDialog" resizable="false" draggable="false"
 							showEffect="fade" hideEffect="fade" modal="false"
-							style="font-size: 12px" height="30%" width="23%" >
+							style="font-size: 12px" height="30%" width="23%">
 							<h:panelGrid columns="2" style="font-size: 12px">
 
 								<!-- <p:outputLabel for="dataInicioEdite" value="Data de Inicio" />
@@ -118,7 +161,7 @@
 								<h:outputText value="Objetivos: " />
 								<p:inputTextarea maxlength="255" size="40"
 									value="#{projetoController.sprint.descricao}"
-									placeholder="Objetivos da Sprint" rows="5"/>
+									placeholder="Objetivos da Sprint" rows="5" />
 
 								<h:outputText value="Duração Esperada: " />
 								<p:inputText maxlength="4" size="4"

@@ -12,12 +12,19 @@
 	</h:head>
 
 	<ui:define name="content">
+	
+		<f:metadata>
+			<f:viewParam name="sprintSelecionada"
+				value="#{atividadeController.sprintSelecionado.id}" />
+			<f:viewAction action="#{atividadeController.prepararAtividade}" />
 
-		<h:form>
+		</f:metadata>
+		
+		<h:form onkeypress="if (event.keyCode == 13) {return false; }">
 
 			<div
 				style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8">
-				<p:outputLabel value="Atividades do Item .." />
+				<p:outputLabel value="Atividades da Sprint #{atividadeController.sprintSelecionado.descricao}" />
 				<p:button icon="ui-icon-help"
 					style="font-size: 14px; position: relative; left: 280px" />
 				<p:commandButton icon="ui-icon-circle-plus"
@@ -32,31 +39,71 @@
 						<h:panelGrid columns="2" style="font-size: 12px">
 
 							<h:outputLabel value="Descrição: " />
-							<p:inputText maxlength="25" size="30" value="#{atividadeController.atividade.descricao}"/>
-							
+							<p:inputText maxlength="25" size="30"
+								value="#{atividadeController.atividade.descricao}" />
+
 							<h:outputLabel value="Horas: " />
-							<p:inputText maxlength="3" size="30" value="#{atividadeController.atividade.horas}"/>
-							
+							<p:inputText maxlength="3" size="30"
+								value="#{atividadeController.atividade.horas}" />
+
 							<h:outputLabel value="Custo: " />
-							<p:inputText maxlength="8" size="30" value="#{atividadeController.atividade.valorGasto}"/>
-							
+							<p:inputText maxlength="8" size="30"
+								value="#{atividadeController.atividade.valorGasto}" />
+
 							<h:outputLabel for="tipoAtividade" value="Tipo da Atividade " />
-							<h:selectOneMenu id="tipoAtividade" value="#{atividadeController.atividade.tipoAtividade}" required="true"
-								label="Text 3">
+							<h:selectOneMenu id="tipoAtividade"
+								value="#{atividadeController.atividade.tipoAtividade}"
+								required="true" label="Text 3">
 								<f:selectItem itemLabel="Análise" itemValue="Analise" />
 								<f:selectItem itemLabel="Projeto" itemValue="Projeto" />
-								<f:selectItem itemLabel="Desenvolvimento" itemValue="Desenvolvimento" />
+								<f:selectItem itemLabel="Desenvolvimento"
+									itemValue="Desenvolvimento" />
 								<f:selectItem itemLabel="Teste" itemValue="Teste" />
 							</h:selectOneMenu>
 						</h:panelGrid>
 						<br />
 						<p:commandButton id="buttonSave" value="Salvar"
 							icon="ui-icon-disk" action="#{atividadeController.create}"
-							oncomplete="PF('atividadeDialog').hide()" ajax="false"/>
+							oncomplete="PF('atividadeDialog').hide()" ajax="false" />
+					</p:outputPanel>
+				</p:dialog>
+				<p:dialog id="atividadeDialogEdit" header="Criar nova Atividade"
+					widgetVar="atividadeDialogEdit" resizable="false" draggable="false"
+					showEffect="fade" hideEffect="fade" modal="true"
+					style="font-size: 12px">
+					<p:outputPanel id="painelAtividadeDialogEdit">
+						<h:panelGrid columns="2" style="font-size: 12px">
+
+							<h:outputLabel value="Descrição: " />
+							<p:inputText maxlength="25" size="30"
+								value="#{atividadeController.atividadeSelecionada.descricao}" />
+
+							<h:outputLabel value="Horas: " />
+							<p:inputText maxlength="3" size="30"
+								value="#{atividadeController.atividadeSelecionada.horas}" />
+
+							<h:outputLabel value="Custo: " />
+							<p:inputText maxlength="8" size="30"
+								value="#{atividadeController.atividadeSelecionada.valorGasto}" />
+
+							<h:outputLabel for="tipoAtividadeEdit" value="Tipo da Atividade " />
+							<h:selectOneMenu id="tipoAtividadeEdit"
+								value="#{atividadeController.atividadeSelecionada.tipoAtividade}"
+								required="true" label="Text 3">
+								<f:selectItem itemLabel="Análise" itemValue="Analise" />
+								<f:selectItem itemLabel="Projeto" itemValue="Projeto" />
+								<f:selectItem itemLabel="Desenvolvimento"
+									itemValue="Desenvolvimento" />
+								<f:selectItem itemLabel="Teste" itemValue="Teste" />
+							</h:selectOneMenu>
+						</h:panelGrid>
+						<br />
+						<p:commandButton id="buttonEdit" value="Editar"
+							icon="ui-icon-disk" action="#{atividadeController.update}"
+							oncomplete="PF('atividadeDialog').hide()" ajax="false" />
 					</p:outputPanel>
 				</p:dialog>
 			</div>
-
 
 			<div id="kanban">
 				<p:growl id="msgs" showDetail="true" />
@@ -78,15 +125,28 @@
 
 								<p:column id="columnDescricao" headerText="Descrição"
 									filterBy="#{atividade.descricao}" filterMatchMode="contains"
-									filterStyle="display:none" style=" width:200px">
+									filterStyle="display:none" style=" width:180px">
 									<h:outputText value="#{atividade.descricao}" />
 								</p:column>
 
-								<p:column id="columnHoras"  headerText="Horas" 
-									style="text-align: center; "
-									filterBy="#{atividade.horas}" filterMatchMode="contains"
-									filterStyle="display:none">
+								<p:column id="columnHoras" headerText="Horas"
+									style="text-align: center; width:40px " filterBy="#{atividade.horas}"
+									filterMatchMode="contains" filterStyle="display:none">
 									<h:outputText value="#{atividade.horas}" />
+								</p:column>
+
+								<p:column id="edit"	style="text-align: center; width:14px">
+									<p:commandButton id="buttonEditar"
+										process="datatableItensProduto"
+										update="@form"	icon="ui-icon-pencil"
+										action="#{atividadeController.manterAtividade()}"
+										style="font-size:8px"
+										oncomplete="PF('atividadeDialogEdit').show()">
+
+										<f:setPropertyActionListener value="#{atividade}"
+											target="#{atividadeController.atividadeSelecionada}" />
+
+									</p:commandButton>
 								</p:column>
 
 							</p:dataTable>

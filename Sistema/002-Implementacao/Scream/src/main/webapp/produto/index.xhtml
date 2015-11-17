@@ -15,7 +15,7 @@
 
         <div
             style="margin-left: 10%; margin-right: 10%; text-align: center; width: 80%; padding: 10px;">
-            <h:form id="formProduto">
+            <h:form id="formProduto" onkeypress="if (event.keyCode == 13) {return false; }">
                 <p:growl id="mensagem" showDetail="false" autoUpdate="true" />
                 <p:outputLabel value="Produtos"
                                style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8" />

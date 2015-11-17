@@ -15,13 +15,15 @@ import org.primefaces.model.DefaultDashboardColumn;
 import org.primefaces.model.DefaultDashboardModel;
 
 import br.ifpb.monteiro.scream.entities.Atividade;
+import br.ifpb.monteiro.scream.entities.Sprint;
 import br.ifpb.monteiro.scream.entities.enums.StatusKanbanEnum;
 import br.ifpb.monteiro.scream.services.AtividadeService;
+import br.ifpb.monteiro.scream.services.SprintService;
 import br.ifpb.monteiro.scream.util.jsf.JsfUtil;
 
 /**
  * 
- * @author Markus Patriota
+ * @author Mauricio
  *
  */
 @Named
@@ -30,17 +32,28 @@ public class AtividadeController {
 
 	@Inject
 	private AtividadeService atividadeSevice;
+	
+	@Inject
+	private SprintService sprintService;
+	
+	private Sprint sprintSelecionado;
 
 	private Atividade atividade;
+	
+	private Atividade atividadeSelecionada;
 
 	private List<Atividade> listatividade;	
 
 	private DashboardModel model;
+	
+	FacesContext contexto = FacesContext.getCurrentInstance();
 
 	@PostConstruct
 	public void Init(){
 
+		setSprintSelecionado(new Sprint());
 		setAtividade(new Atividade());
+		setAtividadeSelecionada(manterAtividade());
 		prepararTela();
 	}
 
@@ -57,7 +70,8 @@ public class AtividadeController {
 	}
 
 	public void update(){
-		atividadeSevice.edit(atividade);
+		System.out.println(atividadeSelecionada.getId());
+		atividadeSevice.edit(atividadeSelecionada);
 		redirect();
 	}
 
@@ -70,13 +84,30 @@ public class AtividadeController {
 	}
 
 	public void redirect(){
-		try {//Redirect para atualiza��o das informações
+		try {//Redirect para atualização das informações
 			FacesContext.getCurrentInstance().getExternalContext()
 			.redirect("/Scream/atividades/index.xhtml");
 		} catch (IOException e) {
 			JsfUtil.addErrorMessage("Aconteceu algo inesperado. Tente recarregar a página.");
 		}
 	}
+	
+	public Atividade manterAtividade() {
+		Atividade atv = (Atividade) contexto.getExternalContext().getSessionMap().put("atividade", atividadeSelecionada);
+		
+		if(atv==null)
+			return new Atividade();
+		else
+			return atv;
+	}
+	
+	public void prepararAtividade(){
+		
+		sprintSelecionado = sprintService.find(sprintSelecionado.getId());
+		sprintSelecionada = sprintSelecionado; 
+	}
+	
+	
 
 	public void prepararTela(){
 		model = new DefaultDashboardModel();
@@ -117,6 +148,8 @@ public class AtividadeController {
 	public void setAtividade(Atividade atividade) {
 		this.atividade = atividade;
 	}
+	
+	public static Sprint sprintSelecionada; 
 
 	public List<Atividade> getListatividade() {
 		return listatividade;
@@ -124,6 +157,22 @@ public class AtividadeController {
 
 	public void setListatividade(List<Atividade> listatividade) {
 		this.listatividade = listatividade;
+	}
+
+	public Atividade getAtividadeSelecionada() {
+		return atividadeSelecionada;
+	}
+
+	public void setAtividadeSelecionada(Atividade atividadeSelecionada) {
+		this.atividadeSelecionada = atividadeSelecionada;
+	}
+
+	public Sprint getSprintSelecionado() {
+		return sprintSelecionado;
+	}
+
+	public void setSprintSelecionado(Sprint sprint) {
+		this.sprintSelecionado = sprint;
 	}
 
 	public DashboardModel getModel() {

@@ -15,7 +15,7 @@
 
 		<div
 			style="margin-left: 10%; margin-right: 10%; text-align: center; width: 80%; padding: 10px;">
-			<h:form id="formProjeto">
+			<h:form id="formProjeto" onkeypress="if (event.keyCode == 13) {return false; }">
 				<p:outputLabel value="Projetos"
 					style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8" />
 				<p:dataTable id="datatableProjeto"
@@ -77,7 +77,6 @@
 
 						<p:button value="Ver Product Backlog" icon="ui-icon-carat-1-nw" style="font-size:14px" 
 							outcome="/projetoSelecionado/index">
-							<!--process="datatableItensProduto"-->
 							
 							 <f:param value="#{projeto.id}" name="projetoEscolhido"/>
 

@@ -51,23 +51,23 @@ public class ProjetoController {
 	private List<Projeto> listProjeto;
 	private List<ItemProductBacklog> itemProductBacklogs;
 	private List<Sprint> listSprint;
-	
 
 	private DefinicaoDePronto definicaoPronto;
 	private Sprint sprint;
 	private Sprint sprintSelected;
+	
 
 
 	FacesContext contexto = FacesContext.getCurrentInstance();
 
 	@PostConstruct
 	public void Init(){
-		projeto = new Projeto();
-
+		
+		setProjeto(new Projeto());
 		setProjetoEscolhido(new Projeto());
-
-		projetoSelecionado= manterProjeto();
-		listProjeto = projetoService.findAll();
+		setProjetoSelecionado(manterProjeto());
+		
+		setListProjeto(projetoService.findAll());
 		
 
 		if(definicaoPronto==null){
@@ -129,7 +129,7 @@ public class ProjetoController {
 		projetoEscolhido = projetoService.find(projetoEscolhido.getId());
 		proj = projetoEscolhido;
 		definicaoPronto = findDPProductBacklog();
-		findSprints();
+		getListSprint();
 
 	}
 
@@ -154,11 +154,6 @@ public class ProjetoController {
 	
 	public List<Sprint> getListSprint(){
 		
-		return this.listSprint;
-    }
-	
-	public List<Sprint> findSprints(){
-
 		List<Sprint> sprints = sprintService.findByProject(proj);
 		setListSprint(sprints);
 		return sprints;
@@ -187,9 +182,7 @@ public class ProjetoController {
 		}
 	}
 
-	public void setProjetoSelecionado(Projeto projetoSelecionado) {
-		this.projetoSelecionado = projetoSelecionado;
-	}
+
 
 	public Projeto manterProjeto() {
 		Projeto aux = (Projeto) contexto.getExternalContext().getSessionMap().put("projeto", projetoSelecionado);
@@ -243,10 +236,22 @@ public class ProjetoController {
 
 	public void setListProjeto(List<Projeto> listProjeto) {
 		this.listProjeto = listProjeto;
+	}	
+
+	public List<ItemProductBacklog> getItemProductBacklogs() {
+		return itemProductBacklogs;
+	}
+
+	public void setItemProductBacklogs(List<ItemProductBacklog> itemProductBacklogs) {
+		this.itemProductBacklogs = itemProductBacklogs;
 	}
 
 	public Projeto getProjetoSelecionado() {
 		return projetoSelecionado;
+	}
+	
+	public void setProjetoSelecionado(Projeto projetoSelecionado) {
+		this.projetoSelecionado = projetoSelecionado;
 	}
 
 
