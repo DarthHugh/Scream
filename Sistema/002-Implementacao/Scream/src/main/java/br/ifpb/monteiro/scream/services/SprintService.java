@@ -1,6 +1,9 @@
 package br.ifpb.monteiro.scream.services;
 
+import static br.ifpb.monteiro.scream.dao.GenericDAO.getLogger;
+
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.inject.Inject;
 
@@ -25,10 +28,16 @@ public class SprintService {
 	public void remove(Sprint entity){
 		sprintDAO.delete(entity);
 	}
-	
+
 	@Transactional
-	public void create(Sprint entity){
-		sprintDAO.create(entity);
+	public Boolean create(Sprint entity){
+		try {
+			sprintDAO.create(entity);
+			return true;
+		} catch (Exception e) {
+			getLogger().log(Level.SEVERE, "Erro no ProjetoService ", e);
+			return false;
+		}
 	}
 
 	@Transactional
@@ -39,7 +48,7 @@ public class SprintService {
 	public Sprint find(Long id){
 		return sprintDAO.findById(id);
 	}
-	
+
 	public List<Sprint> findByProject(Projeto projetoEscolhido) {
 		return sprintDAO.findByProjeto(projetoEscolhido);
 	}

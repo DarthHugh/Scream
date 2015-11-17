@@ -1,6 +1,9 @@
 package br.ifpb.monteiro.scream.services;
 
+import static br.ifpb.monteiro.scream.dao.GenericDAO.getLogger;
+
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.inject.Inject;
 
@@ -23,8 +26,14 @@ public class AtividadeService {
 	}
 
 	@Transactional
-	public void create(Atividade entity){
-		atividadeDAO.create(entity);
+	public Boolean create(Atividade entity){
+		try {
+			atividadeDAO.create(entity);
+			return true;
+		} catch (Exception e) {
+			getLogger().log(Level.SEVERE, "Erro no ProjetoService ", e);
+			return false;
+		}
 	}
 
 	@Transactional
