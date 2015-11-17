@@ -48,7 +48,7 @@ public class AceitacaoDefinicaoPronto {
 	}
 
 	@Test
-	public void deleteDefinicao(){
+	public void excluirDefinicao(){
 		driver.findElement(By.id("formProjetoSelecionado:definicaoPronto")).clear();
 		driver.findElement(By.id("formProjetoSelecionado:definicaoPronto")).sendKeys("");
 		driver.findElement(By.name("formProjetoSelecionado:j_idt46")).click();
