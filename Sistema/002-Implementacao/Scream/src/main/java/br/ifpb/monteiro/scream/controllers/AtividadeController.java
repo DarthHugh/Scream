@@ -136,14 +136,39 @@ public class AtividadeController {
 		model.addColumn(column3);
 		model.addColumn(column4);
 	}
-	
+
 	public void startarSprint(){
-		System.out.println("STARTOU");
-		sprintSelecionada.setDataInicio(registrarData());
-		sprintService.edit(sprintSelecionada);
-		addMessage("A Sprint foi iniciada com sucesso");
+
+		if (sprintSelecionada.getDataInicio()==null) {
+			System.out.println("STARTOU");
+			sprintSelecionada.setDataInicio(registrarData());
+			sprintService.edit(sprintSelecionada);
+			addMessage("A Sprint foi iniciada com sucesso");
+		}else{
+			System.out.println("Já estartada");
+			addMessage("Essa Sprint já foi iniciada");
+		}
+
 	}
-	
+
+
+	public void finalizarSprint(){
+
+		if (sprintSelecionada.getDataInicio()==null) {
+			System.out.println("Já estartada");
+			addMessage("Essa Sprint não foi iniciada");
+		}else if(sprintSelecionada.getDataTermino()!= null){
+			addMessage("Essa Sprint já foi finalizada");
+		}else{
+			System.out.println("Finalizou");
+			sprintSelecionada.setDataTermino(registrarData());
+			sprintService.edit(sprintSelecionada);
+			addMessage("A Sprint foi finalizada");
+		}
+
+	}
+
+
 	private Date registrarData() {
 		Calendar calendar = GregorianCalendar.getInstance();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -152,13 +177,13 @@ public class AtividadeController {
 		Date d = calendar.getTime();
 		return d;
 	}
-	
+
 	public void addMessage(String summary) {
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary,  null);
 		FacesContext.getCurrentInstance().addMessage(null, message);
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * Get's and Set's

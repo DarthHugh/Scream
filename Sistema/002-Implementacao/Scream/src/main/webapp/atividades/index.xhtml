@@ -25,10 +25,13 @@
 			<div
 				style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8">
 				<p:outputLabel value="Atividades da Sprint #{atividadeController.sprintSelecionada.descricao}" />
-				<p:commandButton icon="ui-icon-gear" style="font-size: 14px; position: relative; left: 280px"
-				 action="#{atividadeController.startarSprint()}" update="msgs">
 				
-						
+				<p:commandButton icon="ui-icon-gear" value="Iniciar" style="font-size: 14px; position: relative; left: 280px"
+				 action="#{atividadeController.startarSprint()}" update="msgs">						
+				</p:commandButton>
+				
+				<p:commandButton value="finalizar" style="font-size: 14px; position: relative; left: 280px"
+				 action="#{atividadeController.finalizarSprint()}" update="msgs">						
 				</p:commandButton>
 					
 					
@@ -124,7 +127,7 @@
 								rowKey="item.id">
 
 								<f:facet name="header">
-									<p:outputLabel value="SNOOZE"
+									<p:outputLabel value="Atividades"
 										style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8" />
 								</f:facet>
 
