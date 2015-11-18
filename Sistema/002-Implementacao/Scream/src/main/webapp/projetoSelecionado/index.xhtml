@@ -22,8 +22,103 @@
 
 		<div style="text-align: center">
 			<h:form id="formProjetoSelecionado">
-				<p:outputLabel value="Projeto XXX"
+				<p:outputLabel value="#{projetoController.thumbMessage()}"
 					style=" font-size: 18px; color: #0274A8" />
+					
+				<p:commandButton value="Add Produto"
+					style="font-size: 14px; position: relative; left: 280px"
+					oncomplete="PF('produtoSelect').show()">
+				</p:commandButton>
+				
+				<p:commandButton value="Add Itens"
+					style="font-size: 14px; position: relative; left: 280px"
+					oncomplete="PF('itemDialog').show()">
+
+
+				</p:commandButton>
+
+				<p:dialog id="produtoSelect" header="Produtos" modal="true"
+					widgetVar="produtoSelect" resizable="false" draggable="false"
+					showEffect="fade" hideEffect="fade" style="font-size: 12px"
+					height="50%" width="50%" dynamic="true">
+
+					<h:panelGrid columns="1" style="font-size: 12px">
+
+						<p:dataTable id="produtoDialog"
+							value="#{projetoController.listProduto}" var="produto"
+							widgetVar="produtoDialog" paginatorAlwaysVisible="false"
+							style="margin-top: 20px;" rows="10"
+							emptyMessage="Nenhum item encontrado" paginator="true"
+							paginatorPosition="bottom"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}
+										 {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowKey="produto.id">
+
+							<f:facet name="header">
+            				Selecione um produto
+       						</f:facet>
+
+							<p:column id="produtoDescricao" headerText="Nome"
+								filterBy="#{produto.nome}" filterMatchMode="contains"
+								filterStyle="display:none" width="85%">
+								<h:outputText value="#{produto.nome}" />
+
+							</p:column>
+
+							<p:column id="produtoChoice" filterBy="#{produto.nome}"
+								filterMatchMode="contains" filterStyle="display:none">
+
+								<p:commandButton
+									action="#{projetoController.updateProjeto(produto)}"
+									ajax="false" value="Next" update=":form:msgs"
+									oncomplete="PF('produtoSelect').show()">
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+
+					</h:panelGrid>
+				</p:dialog>
+
+				<p:dialog id="itemDialog" header="Itens do Projeto" modal="true"
+					widgetVar="itemDialog" resizable="false" draggable="false"
+					showEffect="fade" hideEffect="fade" style="font-size: 12px"
+					height="50%" width="50%">
+
+					<h:panelGrid columns="1" style="font-size: 12px">
+
+						<p:dataTable id="itemSelect"
+							value="#{projetoController.ipbModel}" var="itemPB"
+							widgetVar="itemSelect" paginatorAlwaysVisible="false"
+							style="margin-top: 20px;" rows="10"
+							emptyMessage="Nenhum item encontrado" paginator="true"
+							paginatorPosition="bottom"
+							selection="#{projetoController.selectedItemProductBacklogs}"
+							paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}
+										 {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowKey="itemPB.id">
+
+							<f:facet name="header">
+            				Selecione itens para este projeto
+       						</f:facet>
+							<p:column selectionMode="multiple"
+								style="width:16px;text-align:center" />
+							<p:column id="itemPBDescricao" headerText="Nome"
+								filterBy="#{itemPB.descricao}" filterMatchMode="contains"
+								filterStyle="display:none" width="85%">
+								<h:outputText value="#{itemPB.descricao}" />
+
+							</p:column>
+
+							<f:facet name="footer">
+								<p:commandButton update="@form"
+									icon="ui-icon-search" value="View" ajax="false"
+									oncomplete="PF('itemSelect').hide()" 
+									action="#{projetoController.updateItens()}"/>
+							</f:facet>
+						</p:dataTable>
+
+					</h:panelGrid>
+				</p:dialog>
 
 				<p:layout>
 
@@ -31,14 +126,14 @@
 						style="height:70%">
 
 						<p:dataTable id="datatableItensProduto"
-							value="#{ProjetoController.findAllItemPB()}" var="item"
+							value="#{projetoController.itensProjeto}" var="item"
 							widgetVar="tabelaItemProduto" paginatorAlwaysVisible="false"
 							style="margin-top: 20px; " rows="10"
 							emptyMessage="Nenhum item encontrado" scrollable="true"
 							rowKey="item.id">
 
 							<f:facet name="header">
-								<p:outputLabel value="Itens do Produto XXX"
+								<p:outputLabel value="#{projetoController.listMessage()}"
 									style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8" />
 							</f:facet>
 
@@ -60,8 +155,6 @@
 						style="margin-left: 90px">
 
 						<div style="text-align: center">
-							<p:outputLabel value="Itens do Produto XXX"
-								style="float: none; position: relative; text-align: center; font-size: 18px; color: #0274A8; margin-left:10%" />
 
 							<p:selectOneMenu id="sprintSelected" disabled="true"
 								value="#{projetoController.sprintSelected}" required="false"
@@ -107,8 +200,8 @@
 							</h:commandButton>
 
 							<p:dialog id="sprintDialogSelect" header="Sprints" modal="false"
-								widgetVar="sprintDialogSelect" resizable="false" draggable="false"
-								showEffect="fade" hideEffect="fade" 
+								widgetVar="sprintDialogSelect" resizable="false"
+								draggable="false" showEffect="fade" hideEffect="fade"
 								style="font-size: 12px" height="50%" width="50%">
 
 								<h:panelGrid columns="1" style="font-size: 12px">
@@ -186,7 +279,6 @@
 					</p:layoutUnit>
 
 				</p:layout>
-
 			</h:form>
 		</div>
 	</ui:define>

@@ -56,6 +56,9 @@ public class Projeto implements Serializable{
     private List<DefinicaoDePronto> definicoesDePronto;
     
     @OneToMany(mappedBy = "projeto")
+    private List<ItemProductBacklog> itens;
+    
+    @OneToMany(mappedBy = "projeto")
     private List<Sprint> listSprint;
     
     @ManyToOne(cascade=CascadeType.ALL)
@@ -134,8 +137,15 @@ public class Projeto implements Serializable{
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
-    
-    
+
+	public List<ItemProductBacklog> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<ItemProductBacklog> itens) {
+		this.itens = itens;
+	}
+ 
     
 //    public List<UsuarioProjeto> getListUsuarioProjeto() {
 //        return listUsuarioProjeto;

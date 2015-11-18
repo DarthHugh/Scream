@@ -22,6 +22,7 @@ import org.primefaces.event.ToggleEvent;
 
 import br.ifpb.monteiro.scream.entities.ItemProductBacklog;
 import br.ifpb.monteiro.scream.entities.Produto;
+import br.ifpb.monteiro.scream.entities.Projeto;
 import br.ifpb.monteiro.scream.services.ProdutoService;
 import br.ifpb.monteiro.scream.services.SecurityService;
 import br.ifpb.monteiro.scream.util.jsf.JsfUtil;
