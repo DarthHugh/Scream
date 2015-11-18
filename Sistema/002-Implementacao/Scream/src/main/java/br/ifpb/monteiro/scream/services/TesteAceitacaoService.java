@@ -1,8 +1,3 @@
-/*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
 package br.ifpb.monteiro.scream.services;
 
 import static br.ifpb.monteiro.scream.dao.GenericDAO.getLogger;
@@ -24,11 +19,13 @@ public class TesteAceitacaoService {
     
     
     @Transactional
-    public void create(TesteAceitacao entity) {
+    public Boolean create(TesteAceitacao entity) {
         try {
             this.criterioAceitacaoDAO.create(entity);
+            return true;
         } catch (Exception e) {
             getLogger().log(Level.SEVERE, "Erro no CriterioAceitacaoService", e);
+            return false;
         }
     }
     
@@ -54,8 +51,8 @@ public class TesteAceitacaoService {
         return criterioAceitacaoDAO.count();
     }
     
-    public TesteAceitacao find(Long id) {
-        return (TesteAceitacao) criterioAceitacaoDAO.findById(id);
+    public List<TesteAceitacao> find(Long id) {
+        return  this.criterioAceitacaoDAO.findTesteAceitacao(id);
     }
     
     public List<TesteAceitacao> findAll() {

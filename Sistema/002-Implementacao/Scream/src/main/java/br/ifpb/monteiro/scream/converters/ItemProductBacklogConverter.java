@@ -24,7 +24,7 @@ public class ItemProductBacklogConverter implements Converter {
     	ItemProductBacklog objectToReturn = null;
 
         if (value != null) {
-            objectToReturn = (ItemProductBacklog) this.itemProdutoBacklogServiceIF.find(new Long(value));
+            objectToReturn = (ItemProductBacklog) this.itemProdutoBacklogServiceIF.findById(new Long(value));
         }
         return objectToReturn;
     }

@@ -29,7 +29,7 @@ public class GenericDAO<T> implements Serializable {
     
     @Transient
     @Inject
-    private EntityManager entityManager;
+	protected EntityManager entityManager;
     
     protected Class<T> entity;
     

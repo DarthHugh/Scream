@@ -24,7 +24,7 @@ public class ContaConverter implements Converter {
         Conta objectToReturn = null;
 
         if (value != null) {
-            objectToReturn = (Conta) this.contaServiceIF.find(new Long(value));
+            objectToReturn = (Conta) this.contaServiceIF.findById(new Long(value));
         }
         return objectToReturn;
     }

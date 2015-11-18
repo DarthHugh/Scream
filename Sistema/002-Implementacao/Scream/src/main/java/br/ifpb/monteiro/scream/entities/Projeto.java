@@ -4,17 +4,20 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+
+
 
 /**
  *
@@ -51,6 +54,16 @@ public class Projeto implements Serializable{
 //    @ManyToOne
     @OneToMany(mappedBy = "projeto")
     private List<DefinicaoDePronto> definicoesDePronto;
+    
+    @OneToMany(mappedBy = "projeto")
+    private List<ItemProductBacklog> itens;
+    
+    @OneToMany(mappedBy = "projeto")
+    private List<Sprint> listSprint;
+    
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="produto_id")
+    private Produto produto;
     
     public Long getId() {
         return id;
@@ -108,7 +121,31 @@ public class Projeto implements Serializable{
     public void setDefinicoesDePronto(List<DefinicaoDePronto> definicoesDePronto) {
         this.definicoesDePronto = definicoesDePronto;
     }
-    
+
+	public List<Sprint> getListSprint() {
+		return listSprint;
+	}
+
+	public void setListSprint(List<Sprint> listSprint) {
+		this.listSprint = listSprint;
+	}
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
+
+	public List<ItemProductBacklog> getItens() {
+		return itens;
+	}
+
+	public void setItens(List<ItemProductBacklog> itens) {
+		this.itens = itens;
+	}
+ 
     
 //    public List<UsuarioProjeto> getListUsuarioProjeto() {
 //        return listUsuarioProjeto;

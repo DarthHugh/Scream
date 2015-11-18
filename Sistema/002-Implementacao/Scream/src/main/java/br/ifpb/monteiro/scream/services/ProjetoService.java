@@ -28,9 +28,7 @@ public class ProjetoService {
     @Transactional
     public Boolean create(Projeto entity) {
         try {
-            definicaoDeProntoService.createDefinicaoProntoPB(entity);
-            definicaoDeProntoService.createDefinicaoProntoRelease(entity);
-            definicaoDeProntoService.createDefinicaoProntoSprint(entity);
+            definicaoDeProntoService.createDefinicaoPronto(entity);;
             this.projetoDao.create(entity);
             return true;
         } catch (Exception e) {
@@ -51,7 +49,7 @@ public class ProjetoService {
         return projetoDao.findRange(range);
     }
     
-    @Transactional
+    //@Transactional
     public void remove(Projeto entity) {
         this.projetoDao.delete(entity);
     }

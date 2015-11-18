@@ -1,5 +1,6 @@
 package br.ifpb.monteiro.scream.controllers;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,6 +17,7 @@ import br.ifpb.monteiro.scream.entities.ItemProductBacklog;
 import br.ifpb.monteiro.scream.entities.Produto;
 import br.ifpb.monteiro.scream.services.ItemProductBacklogService;
 import br.ifpb.monteiro.scream.services.ProdutoService;
+import br.ifpb.monteiro.scream.util.jsf.JsfUtil;
 
 /**
  *
@@ -42,36 +44,65 @@ public class ItemProductBacklogController implements Serializable {
 
 	private ItemProductBacklog selectItemProductBacklog;
 
-	private List<ItemProductBacklog> listItensProductBacklog;
-	
 	private List<ItemProductBacklog> listItensProduto;
+
+	FacesContext contexto = FacesContext.getCurrentInstance();
 
 	@PostConstruct
 	public void Init(){
+		//setSelectItemProductBacklog();
+
 		produtoSelecionado = produtoService.find(buscaIdURL());
 		itemProductBacklog = new ItemProductBacklog();
-		selectItemProductBacklog= new ItemProductBacklog();
+
+		if(contexto.getExternalContext().getSessionMap().get("item")==null){
+			setSelectItemProductBacklog(new ItemProductBacklog());
+		}else{
+			setSelectItemProductBacklog((ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item"));
+		} 
 		listItensProduto= itemProductBacklogService.findItensProduto(buscaIdURL());
-		//setListProduto(produtoService.findAll());
-		setListItensProductBacklog(findAll());
 	}
 
 	public void create(){
 		gerarData();
-		itemProductBacklog.setProduto(produtoSelecionado);
-		itemProductBacklogService.create(itemProductBacklog);
+
+		if(validarItemPB(itemProductBacklog)){
+			itemProductBacklogService.create(itemProductBacklog);
+			produtoSelecionado.getListItensProduct().add(itemProductBacklog);
+			itemProductBacklog.setProduto(produtoSelecionado);
+			this.itemProductBacklogService.update(itemProductBacklog);
+			redirect();
+		}
+	}
+
+	/**
+	 * M�todo remove o ItemProductBacklog selecionado do Banco de dados
+	 * @param itemProductBacklog
+	 */
+	public void delete(ItemProductBacklog itemProductBacklog) {
+		itemProductBacklogService.remove(itemProductBacklog);
+		redirect();
 	}
 
 
-	public void remove() {
-		this.itemProductBacklogService.remove(selectItemProductBacklog);
-	}
 
 	public void update(){
-		this.itemProductBacklogService.update(selectItemProductBacklog);
+		if(selectItemProductBacklog.getId() == null){
+			System.out.println("Deu Merge");
+		}else{	
+			if(validarItemPB(itemProductBacklog)){
+			itemProductBacklogService.update(selectItemProductBacklog);
+			}
+		}
+		redirect();
 	}
 
+	public Boolean validarItemPB(ItemProductBacklog itemPB){
+		if(itemPB.getDescricao()==null || itemPB.getDescricao().equals(""))
+			return false;
 
+		return true;
+	}
 
 	private void gerarData() {
 		Calendar calendar = GregorianCalendar.getInstance();
@@ -79,20 +110,42 @@ public class ItemProductBacklogController implements Serializable {
 		dateFormat.format(calendar.getTime());
 		calendar = dateFormat.getCalendar();
 		itemProductBacklog.setDataInicio(calendar.getTime());
-
 	}
-
 
 	private Long buscaIdURL(){
 
-		FacesContext.getCurrentInstance().getExternalContext().getRequest();
 		String idAux = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("id");
-		Long convertID = Long.parseLong(idAux);
+		if(idAux != null)
+			idProduto = Long.parseLong(idAux);
 
-		return convertID;
+		return idProduto;
 	}
 
-	
+	public void redirect(){
+		try {//Redirect para atualiza��o das informa��es
+			FacesContext.getCurrentInstance().getExternalContext()
+			.redirect("/Scream/itensProduto/index.xhtml?id="+idProduto);
+		} catch (IOException e) {
+			JsfUtil.addErrorMessage("Aconteceu algo inesperado ao apagar este produto");
+		}
+	}
+
+	//	public void atualizarId(){
+	//		if(contexto.getExternalContext().getSessionMap().get("item")==null){
+	//			setSelectItemProductBacklog(new ItemProductBacklog());
+	//		}else{
+	//			setSelectItemProductBacklog((ItemProductBacklog) contexto.getExternalContext().getSessionMap().get("item"));
+	//			idItemPB = getSelectItemProductBacklog().getId();
+	//		}
+	//		
+	//		
+	//		System.out.println(idItemPB);
+	//	}
+
+	public void manterItem() {
+		contexto.getExternalContext().getSessionMap().put("item", selectItemProductBacklog);
+	}
+
 	//Pesquisas no Banco
 
 	public int count() {
@@ -121,14 +174,6 @@ public class ItemProductBacklogController implements Serializable {
 		this.selectItemProductBacklog = selectItemProductBacklog;
 	}
 
-	public List<ItemProductBacklog> getListItensProductBacklog() {
-		return listItensProductBacklog;
-	}
-
-	public void setListItensProductBacklog(List<ItemProductBacklog> listItensProductBacklog) {
-		this.listItensProductBacklog = listItensProductBacklog;
-	}
-
 	public ItemProductBacklog getItemProductBacklog() {
 		return itemProductBacklog;
 	}
@@ -153,7 +198,12 @@ public class ItemProductBacklogController implements Serializable {
 		this.listProduto = listProduto;
 	}
 
-	
+
+	public static Long idProduto;
+	//	
+	//	public static Long idItemPB;
+
+
 	public List<ItemProductBacklog> getListItensProduto() {
 		return listItensProduto;
 	}

@@ -14,14 +14,14 @@ public interface GenericServiceIF<T> extends Serializable {
 
     void create(T entity);
 
-    void edit(T entity);
+    void update(T entity);
 
-    T find(Long id);
+    T findById(Long id);
 
     List<T> findAll();
 
     List<T> findRange(int[] range);
 
-    void remove(T entity);
+    void delete(T entity);
 
 }
