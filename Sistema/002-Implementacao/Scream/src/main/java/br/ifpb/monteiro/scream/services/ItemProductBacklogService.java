@@ -80,4 +80,8 @@ public class ItemProductBacklogService {
     	return itemProductBacklogDAO.findItemPBAll();
     }
     
+    public List<ItemProductBacklog> findByProjeto(Long id){
+    	return itemProductBacklogDAO.findProjeto(id);
+    }
+    
 }

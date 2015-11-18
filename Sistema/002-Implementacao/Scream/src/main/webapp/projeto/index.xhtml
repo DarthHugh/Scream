@@ -178,19 +178,6 @@
 						<h:outputLabel value="Duração da Sprint " />
 						<p:inputText maxlength="2" size="2"
 							value="#{projetoController.projeto.sprintDuration}" />
-
-						<p:selectOneMenu id="selecaoProduto" disabled="true"
-							value="#{projetoController.produto}" required="false"
-							style="position: relative; margin-left:30%" maxlength="8">
-							<f:selectItem itemLabel="Selecione o Produto"
-								noSelectionOption="true" />
-
-							<f:selectItems value="#{projetoController.listProduto}"
-								var="produtoSelect" itemLabel="#{produtoSelect.descricao}"
-								itemValue="#{projetoController.produto}" actionListener="#{projetoController.syso()}"/>
-						</p:selectOneMenu>
-
-
 						<!-- 
 						<h:outputLabel value="Terminado" />
 						<p:selectBooleanCheckbox
@@ -200,8 +187,8 @@
 
 					<br />
 					<p:commandButton id="buttonSalvar" value="Salvar"
-						icon="ui-icon-disk" update=":formProjeto:datatableProjeto"
-						action="#{projetoController.create()}"
+						icon="ui-icon-disk"
+						action="#{projetoController.create}"
 						oncomplete="PF('novoProjetoDialog').hide()" />
 
 				</p:dialog>

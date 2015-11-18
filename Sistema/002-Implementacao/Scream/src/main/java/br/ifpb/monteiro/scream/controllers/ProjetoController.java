@@ -2,6 +2,7 @@ package br.ifpb.monteiro.scream.controllers;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -24,6 +25,7 @@ import br.ifpb.monteiro.scream.services.ItemProductBacklogService;
 import br.ifpb.monteiro.scream.services.ProdutoService;
 import br.ifpb.monteiro.scream.services.ProjetoService;
 import br.ifpb.monteiro.scream.services.SprintService;
+import br.ifpb.monteiro.scream.util.jsf.ItemPBModel;
 import br.ifpb.monteiro.scream.util.jsf.JsfUtil;
 
 /**
@@ -45,6 +47,9 @@ public class ProjetoController {
 
 	@Inject
 	private SprintService sprintService;
+	
+	@Inject
+	private ItemProductBacklogService iBacklogService;
 
 	@Inject
 	private ProdutoService produtoService;
@@ -55,7 +60,11 @@ public class ProjetoController {
 
 	private List<Projeto> listProjeto;
 	private List<ItemProductBacklog> itemProductBacklogs;
+	private List<ItemProductBacklog> selectedItemProductBacklogs;
+	private List<ItemProductBacklog> ItensProjeto;
 	private List<Sprint> listSprint;
+	
+	private ItemPBModel ipbModel;
 	
 	private List<Produto> listProduto;
 	private Produto produto;
@@ -79,6 +88,8 @@ public class ProjetoController {
 		
 		setListProduto(produtoService.findAll());
 		
+		
+		
 
 		if(definicaoPronto==null){
 			setDefinicaoPronto(new DefinicaoDePronto());
@@ -90,15 +101,17 @@ public class ProjetoController {
 		//		definicaoPronto = manterDefinicao();
 		findAllItemPB();
 		//		definicaoPronto = findDefinicaoPronto(DefinicaoDeProntoEnum.PRODUCTBACKLOG, projetoSelecionado.getId());
+
+        ipbModel = new ItemPBModel(getItemProductBacklogs());
+		
 	}
 
 	//Métodos de Projeto
 
 	public void create() {
-
 		registrarData();
 		projeto.setIsCompleted(false);
-		System.out.println(produto.getDescricao());
+		System.out.println(projeto.getNome());
 //		projeto.setProduto(produto);
 		projetoService.create(projeto);
 		JsfUtil.addSuccessMessage("Projeto adicionado com sucesso!");
@@ -119,6 +132,13 @@ public class ProjetoController {
 			redirect();
 		}
 	}
+	
+	public void updateProjeto(Produto produto){
+		System.out.println(produto.getDescricao());
+		proj.setProduto(produto);
+		projetoService.update(proj);
+		addMessage("Produto com sucesso");
+	}
 
 	public void remove(Projeto projetoSelec){
 		projetoService.remove(projetoSelec);
@@ -131,6 +151,10 @@ public class ProjetoController {
 	
 	public void setListProduto(List<Produto> listProduto) {
 		this.listProduto = listProduto;
+	}
+	
+	public List<ItemProductBacklog> listaItemPB(){
+		return itemProductBacklogService.findByProjeto(proj.getId());
 	}
 
 	//Métodos de Definição de Pronto 
@@ -152,7 +176,16 @@ public class ProjetoController {
 		proj = projetoEscolhido;
 		definicaoPronto = findDPProductBacklog();
 		getListSprint();
+		setItensProjeto(listaItemPB());
 
+	}
+	
+	public void updateItens(){
+		System.out.println(selectedItemProductBacklogs.size());
+		for (int i = 0; i < selectedItemProductBacklogs.size(); i++) {
+			selectedItemProductBacklogs.get(i).setProjeto(proj);
+			iBacklogService.update(selectedItemProductBacklogs.get(i));
+		}
 	}
 
 	public Boolean validarDefinicao(DefinicaoDePronto dp){
@@ -161,6 +194,20 @@ public class ProjetoController {
 			return false;
 
 		return true;
+	}
+	
+	public String thumbMessage(){
+		if(proj==null)
+			return "Projeto";
+		else
+			return "Projeto "+proj.getNome();
+	}
+	
+	public String listMessage(){
+		if(proj.getProduto()==null)
+			return "Adicione um produto";
+		else
+			return "Produto: "+proj.getProduto().getNome();
 	}
 
 
@@ -316,8 +363,34 @@ public class ProjetoController {
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
+
+	public List<ItemProductBacklog> getSelectedItemProductBacklogs() {
+		return selectedItemProductBacklogs;
+	}
+
+	public void setSelectedItemProductBacklogs(
+			List<ItemProductBacklog> selectedItemProductBacklogs) {
+		this.selectedItemProductBacklogs = selectedItemProductBacklogs;
+	}
+
+	public ItemPBModel getIpbModel() {
+		return ipbModel;
+	}
+
+	public void setIpbModel(ItemPBModel ipbModel) {
+		this.ipbModel = ipbModel;
+	}
+
+	public List<ItemProductBacklog> getItensProjeto() {
+		return ItensProjeto;
+	}
+
+	public void setItensProjeto(List<ItemProductBacklog> itensProjeto) {
+		ItensProjeto = itensProjeto;
+	}
 	
 	
 	
 	
+
 }
